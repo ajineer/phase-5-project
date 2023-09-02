@@ -15,16 +15,23 @@ from models import User
 
 @app.route('/')
 def index():
-    return '<h1>Phase 4 Project Server</h1>'
+    return '<h1>Phase 5 Project Server</h1>'
 
 class Signup(Resource):
 
     def post(self):
         username = request.get_json().get('username')
+        image = request.get_json().get('image')
+        email = request.get_json().get('email')
         password = request.get_json().get('password')
 
+
         if username and password and not User.query.filter(User.username == username).first():
-            new_user = User(username = username)
+            new_user = User(
+                username = username,
+                image = image,
+                email = email
+                )
             new_user.password_hash = password
             db.session.add(new_user)
             db.session.commit()
@@ -67,3 +74,12 @@ class Logout(Resource):
             session['user_id'] = None
             return {}, 204
         return {'error': 'Unauthorized'}, 401
+    
+    
+api.add_resource(Signup, '/signup', endpoint='signup')
+api.add_resource(CheckSession, '/check_session', endpoint='check_session')
+api.add_resource(Login, '/login', endpoint='login')
+api.add_resource(Logout, '/logout', endpoint='logout')
+
+if __name__ == '__main__':
+    app.run(port=5555, debug=True)
