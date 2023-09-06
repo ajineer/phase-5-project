@@ -85,7 +85,7 @@ class Task(db.Model, SerializerMixin):
     list_id = db.Column(db.Integer, db.ForeignKey('lists.id', ondelete='CASCADE'))
 
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated = db.Column(db.DateTime, onupdate=datetime.utcnow default=datetime.utcnow)
+    updated = db.Column(db.DateTime, onupdate=datetime.utcnow, default=datetime.utcnow)
     status = db.Column(db.Integer, nullable=False, default=0)
 
     list = db.relationship('List', back_populates='tasks')

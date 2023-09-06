@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import HeaderBar from './components/HeaderBar'
 import Nav from './components/Nav'
 import Home from './components/Home'
 import Signup from './components/Signup'
 import Login from './components/Login'
+import ListUI from './components/ListUI'
+import GroceryUI from './components/GroceryUI'
 
 
 function App() {
   const [user, setUser] = useState(null)
+  const navigate = useNavigate()
 
     useEffect(() => {
       async function fetchData(){
-        const response = await fetch('/check_session')
-        const data = await response.json()
-        if (data.ok){
-          data.json().then(user => setUser(user))
+        const response = await fetch('/api/check_session')
+        if (response.ok){
+          const data = await response.json() 
+          setUser(data)
         }
       }
       fetchData()
@@ -23,9 +26,10 @@ function App() {
 
     function logout(){
       setUser(null)
-      fetch('/logout', {
+      fetch('/api/logout', {
         method: 'DELETE'
       })
+      navigate('/')
     }
 
   return (
@@ -36,6 +40,8 @@ function App() {
           <Route exact path='/' element={ <Home/>}/>
           <Route path='/signup' element={ <Signup/>}/>
           <Route path='/login'  element={ <Login onLogin={setUser}/>}/>
+          <Route path='/lists' element={ <ListUI user={user}/>}/>
+          <Route path='/grocery_lists' element={ <GroceryUI user={user}/>}/>
         </Routes>
     </div>
   )

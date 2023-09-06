@@ -8,14 +8,20 @@ function Nav({user, logout}){
         user !== null ? 
         <div>
             <h1>Naviation</h1>
-            <NavLink to={"/"} exact>
+            <NavLink to={"/"} exact='true'>
                 <span>Home</span>
+            </NavLink>
+            <NavLink to={'/lists'}>
+                <span>Lists</span>
+            </NavLink>
+            <NavLink to={'/grocery_lists'}>
+                <span>Grocery</span>
             </NavLink>
             <button onClick={logout}>Logout</button>
         </div> :
         <div>
             <h1>Navigation</h1>
-            <NavLink to={"/"}>
+            <NavLink to={"/"} exact='true'>
                 <span>Home</span>
             </NavLink>
             <NavLink to={'/signup'}>

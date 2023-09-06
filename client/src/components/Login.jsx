@@ -23,7 +23,7 @@ function Login({onLogin}){
                 r.json().then((user) => 
                 {
                     onLogin(user)
-                    navigate('/home')
+                    navigate('/')
                 })
                 setStatus(true)
             }else{

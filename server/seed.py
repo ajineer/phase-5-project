@@ -1,5 +1,5 @@
 from app import app
-from models import db, User, List
+from models import db, User, List, GroceryList, GroceryItem
 
 if __name__ == '__main__':
 
@@ -7,5 +7,7 @@ if __name__ == '__main__':
         # User.query.delete()
         # db.session.commit()
 
-        List.query.delete()
+        # List.query.delete()
+        # GroceryList.query.delete()
+        GroceryItem.query.delete()
         db.session.commit()
