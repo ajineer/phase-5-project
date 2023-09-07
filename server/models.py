@@ -21,6 +21,7 @@ class User(db.Model, SerializerMixin):
     lists = db.relationship('List', back_populates='user', cascade='all, delete')
     grocery_lists = db.relationship('GroceryList', back_populates='user', cascade='all, delete')
     events = db.relationship('Event', back_populates='user', cascade='all, delete')
+    days = db.relationship('Day', back_populates='user')
 
     @hybrid_property
     def password_hash(self):
@@ -166,8 +167,12 @@ class Event(db.Model, SerializerMixin):
 class Day(db.Model, SerializerMixin):
     
     __tablename__ = 'days'
+    serialize_rules = ('-user',)
 
     id = db.Column(db.Integer, primary_key = True)
+    date = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     lists = db.relationship('List', back_populates='day')
     events = db.relationship('Event', back_populates='day')
     grocery_lists = db.relationship('GroceryList', back_populates='day')
+    user = db.relationship('User', back_populates='days')

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 
 function GroceryItemForm({setToggle, setSelList, selList}){
 
-
     const cloudinaryRef = useRef()
     const widgetRef = useRef()
     const [formData, setFormData] = useState({
@@ -17,7 +16,6 @@ function GroceryItemForm({setToggle, setSelList, selList}){
 
     function handleChange (e){
         setFormData({...formData, [e.target.name]: e.target.value})
-        console.log(formData)
     }
 
     function handleSubmit(e){
@@ -29,7 +27,7 @@ function GroceryItemForm({setToggle, setSelList, selList}){
             },
             body: JSON.stringify(formData)
         }).then(r => r.json())
-        .then(data => (setSelList({...selList, data}), setToggle(false)))
+        .then(data => (setToggle(false), setSelList({...selList, grocery_items:[...selList.grocery_items, data]})))
     }
     useEffect(()=>{
         console.log(window.cloudinary)

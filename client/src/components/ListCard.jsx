@@ -1,7 +1,7 @@
 function ListCard({list}){
 
     return (
-        list == undefined ? <span>No list</span> :
+        list === undefined ? <span>No list</span> :
         <div>
             <h2>{list.name}</h2>
             {list.grocery_items.length === 0? 

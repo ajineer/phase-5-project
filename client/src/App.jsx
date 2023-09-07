@@ -7,6 +7,7 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import ListUI from './components/ListUI'
 import GroceryUI from './components/GroceryUI'
+import CalendarUI from './components/CalendarUI'
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           <Route path='/login'  element={ <Login onLogin={setUser}/>}/>
           <Route path='/lists' element={ <ListUI user={user}/>}/>
           <Route path='/grocery_lists' element={ <GroceryUI user={user}/>}/>
+          <Route path='/calendar' element={<CalendarUI user={user}/>}></Route>
         </Routes>
     </div>
   )

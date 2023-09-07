@@ -17,6 +17,9 @@ function Nav({user, logout}){
             <NavLink to={'/grocery_lists'}>
                 <span>Grocery</span>
             </NavLink>
+            <NavLink to={'/calendar'}>
+                <span>Calendar</span>
+            </NavLink>
             <button onClick={logout}>Logout</button>
         </div> :
         <div>

@@ -243,6 +243,18 @@ class GroceryListByID(Resource):
             return {'error': 'grocery_list not found'}, 404
         return {'error': 'Unauthorized'}, 401
 
+class GroceryItemByID(Resource):
+
+    def delete(self, id):
+        if session.get('user_id'):
+            grocery_item = GroceryItem.query.filter(GroceryItem.id == id).first()
+            if grocery_item:
+                db.session.delete(grocery_item)
+                db.session.commit()
+                return {'Message': 'Grocery item deleted'}, 204
+            return {'error': 'Grocery item not found'}, 404
+        return {'error': 'Unauthorized'}, 401
+
 class Events(Resource):
 
     def get(self):
@@ -297,17 +309,40 @@ class EventsByID(Resource):
 
 class Days(Resource):
 
+    def get(self):
+        if session.get('user_id'):
+            days = Day.query.all()
+            if days:
+                return [day.to_dict() for day in days], 200
+            return {'error': 'No days found'}, 404
+        return {'error': 'Unaruthorized'}, 401   
+
     def post(self):
         if session.get('user_id'):
             try:
-                new_day = Day()
-                db.session.add(new_day)
-                db.session.commit()
-                return new_day.to_dict(), 201
+                new_day = Day(
+                    user_id = session['user_id'],
+                    date = request.get_json()['date']
+                )
+                if not Day.query.filter(Day.date == request.get_json()['date']).first():
+                    db.session.add(new_day)
+                    db.session.commit()
+                    return new_day.to_dict(), 201
+                return {'error': '422 Unprocessable Entity'}, 422
             except IntegrityError:
                 return {'error': 'could not create Day'}, 422
         return {'error': 'Unauthorized'}, 401
-
+    
+class DaysByID(Resource):
+    def delete(self, id):
+        if session.get('user_id'):
+            day = Day.query.filter(Day.id == id).first()
+            if day:
+                db.session.delete(day)
+                db.session.commit()
+                return {'Message': 'Day deleted'}, 204
+            return {'error': 'Day not found'}, 404
+        return {'error': 'Unauthorized'}, 401
 
 # basic user paths
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -323,8 +358,10 @@ api.add_resource(TasksById, '/tasks/<int:task_id>')
 # grocery list views
 api.add_resource(GroceryLists, '/grocery_lists', endpoint='grocery_lists')
 api.add_resource(GroceryListByID, '/grocery_lists/<int:id>')
+api.add_resource(GroceryItemByID, '/grocery_item/<int:id>')
 
 api.add_resource(Days, '/days', endpoint='days')
+api.add_resource(DaysByID, '/days/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

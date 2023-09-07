@@ -30,12 +30,15 @@ function GroceryCarousel({user}){
     return (
         <>
             <ListCard list = {lists[current-1]}/>
-            <ListCard list = {lists[current]}/>
+            <ListCard list = {selList}/>
             <ListCard list = {lists[current+1]}/>
             <div> <button onClick={prev}>{`\u2770`}</button><button onClick={next}>{`\u2771`}</button></div>
-            {toggle?<GroceryItemForm setToggle={setToggle} selList={selList} setSelList={setSelList}/>:
-            <GroceryItems selList={selList}/>}
-            {toggle?<button onClick={() => setToggle(!toggle)}>View items</button>:<button onClick={() => setToggle(!toggle)}>Add item</button>}
+            {toggle?
+            <GroceryItemForm setToggle={setToggle} selList={selList} setSelList={setSelList}/>:
+            <GroceryItems setSelList={setSelList} selList={selList}/>}
+            {toggle?
+            <button onClick={() => setToggle(!toggle)}>View items</button>:
+            <button onClick={() => setToggle(!toggle)}>Add item</button>}
         </>
     )
 }
