@@ -34,22 +34,24 @@ function Login({onLogin}){
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Username</label>
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                />
+        <>
+            <form onSubmit={handleSubmit}>
+                <label>Username</label>
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    />
 
-            <label>Password</label>
-            <input
-                type="text"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                />
-            <button type="submit">Submit</button>
-        </form>
+                <label>Password</label>
+                <input
+                    type="text"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    />
+                <button type="submit">Submit</button>
+            </form>
+        </>
     )       
 }
 

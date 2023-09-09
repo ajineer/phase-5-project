@@ -67,7 +67,7 @@ function Signup(){
   };
 
   return (
-    <div>
+    <>
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -100,7 +100,7 @@ function Signup(){
         />
         <button type="submit">Sign Up</button>
       </form>
-       </div>
+    </>
    )
 }
 

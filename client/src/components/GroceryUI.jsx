@@ -1,7 +1,6 @@
 import { useState } from "react"
 import GroceryCarousel from './GroceryCarousel'
 import GForm from "./GForm"
-import GroceryItems from './GroceryItems'
 
 function GroceryUI({user}){
 

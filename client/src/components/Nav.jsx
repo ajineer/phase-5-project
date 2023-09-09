@@ -6,23 +6,20 @@ function Nav({user, logout}){
     return (
 
         user !== null ? 
-        <div>
-            <h1>Naviation</h1>
-            <NavLink to={"/"} exact='true'>
-                <span>Home</span>
+        <>
+            <h1>Navigation</h1>
+            <NavLink className="ml-4" to={"/"} exact='true'>
+                Home
             </NavLink>
             <NavLink to={'/lists'}>
-                <span>Lists</span>
-            </NavLink>
-            <NavLink to={'/grocery_lists'}>
-                <span>Grocery</span>
+                Lists
             </NavLink>
             <NavLink to={'/calendar'}>
-                <span>Calendar</span>
+                Calendar
             </NavLink>
             <button onClick={logout}>Logout</button>
-        </div> :
-        <div>
+        </> :
+        <>
             <h1>Navigation</h1>
             <NavLink to={"/"} exact='true'>
                 <span>Home</span>
@@ -33,7 +30,7 @@ function Nav({user, logout}){
             <NavLink to={'/login'}>
                 <span>Sign in</span>
             </NavLink>
-        </div>
+        </>
     )
 }
 

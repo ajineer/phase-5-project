@@ -29,9 +29,11 @@ function GroceryCarousel({user}){
 
     return (
         <>
-            <ListCard list = {lists[current-1]}/>
-            <ListCard list = {selList}/>
-            <ListCard list = {lists[current+1]}/>
+            <div className="flex">
+                <ListCard list = {lists[current-1]}/>
+                <ListCard list = {selList}/>
+                <ListCard list = {lists[current+1]}/>
+            </div>
             <div> <button onClick={prev}>{`\u2770`}</button><button onClick={next}>{`\u2771`}</button></div>
             {toggle?
             <GroceryItemForm setToggle={setToggle} selList={selList} setSelList={setSelList}/>:

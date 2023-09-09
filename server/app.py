@@ -11,7 +11,7 @@ from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 from datetime import datetime
 # Add your model imports
-from models import User, List, GroceryItem, GroceryList, Task, Event, Day
+from models import User, List, Task, Event
 # Views go here!
 
 @app.route('/')
@@ -171,89 +171,89 @@ class TasksById(Resource):
         return {'error': 'Unauthorized'}, 401
 
     
-class GroceryLists(Resource):
+# class GroceryLists(Resource):
 
-    def get(self):
-        if session.get('user_id'):
-            grocery_lists = GroceryList.query.filter(GroceryList.user_id == session['user_id']).all()
-            if grocery_lists:
-                return [g.to_dict(rules=('grocery_items'),) for g in grocery_lists], 200
-            return {'error': 'No grocery lists found'}, 404
-        return {'error': 'Unauthorized'}, 401
+#     def get(self):
+#         if session.get('user_id'):
+#             grocery_lists = GroceryList.query.filter(GroceryList.user_id == session['user_id']).all()
+#             if grocery_lists:
+#                 return [g.to_dict(rules=('grocery_items'),) for g in grocery_lists], 200
+#             return {'error': 'No grocery lists found'}, 404
+#         return {'error': 'Unauthorized'}, 401
     
-    def post(self):
+#     def post(self):
 
-        if session.get('user_id'):
-            try:
-                new_grocery_list = GroceryList(
-                    user_id = session['user_id'],
-                    name = request.get_json()['name']
-                )
-                db.session.add(new_grocery_list)
-                db.session.commit()
-                return new_grocery_list.to_dict(), 201
-            except IntegrityError:
-                return {'error': 'could not create grocery List'}, 422
-        return {'error': 'Unauthorized'}, 401
+#         if session.get('user_id'):
+#             try:
+#                 new_grocery_list = GroceryList(
+#                     user_id = session['user_id'],
+#                     name = request.get_json()['name']
+#                 )
+#                 db.session.add(new_grocery_list)
+#                 db.session.commit()
+#                 return new_grocery_list.to_dict(), 201
+#             except IntegrityError:
+#                 return {'error': 'could not create grocery List'}, 422
+#         return {'error': 'Unauthorized'}, 401
 
-class GroceryListByID(Resource):
+# class GroceryListByID(Resource):
 
-    def get(self, id):
-        if session.get('user_id'):
-            grocery_items = GroceryItem.query.filter(GroceryItem.grocery_list_id == id).all()
-            if grocery_items:
-                return [grocery_item.to_dict() for grocery_item in grocery_items], 200
-            return {'error': 'No grocery items found'}, 404
-        return {'error': 'Unauthorized'}, 401  
+#     def get(self, id):
+#         if session.get('user_id'):
+#             grocery_items = GroceryItem.query.filter(GroceryItem.grocery_list_id == id).all()
+#             if grocery_items:
+#                 return [grocery_item.to_dict() for grocery_item in grocery_items], 200
+#             return {'error': 'No grocery items found'}, 404
+#         return {'error': 'Unauthorized'}, 401  
     
-    def post(self, id):
-        if session.get('user_id'):
-            try:
-                new_grocery_item = GroceryItem(
-                    grocery_list_id = id,
-                    name = request.get_json()['name'],
-                    price = request.get_json()['price'],
-                    image = request.get_json()['image']
-                )
-                db.session.add(new_grocery_item)
-                db.session.commit()
-                return new_grocery_item.to_dict(), 201
-            except IntegrityError:
-                return {'error': 'could not create grocery item'}, 422
-        return {'error': 'Unauthorized'}, 401
+#     def post(self, id):
+#         if session.get('user_id'):
+#             try:
+#                 new_grocery_item = GroceryItem(
+#                     grocery_list_id = id,
+#                     name = request.get_json()['name'],
+#                     price = request.get_json()['price'],
+#                     image = request.get_json()['image']
+#                 )
+#                 db.session.add(new_grocery_item)
+#                 db.session.commit()
+#                 return new_grocery_item.to_dict(), 201
+#             except IntegrityError:
+#                 return {'error': 'could not create grocery item'}, 422
+#         return {'error': 'Unauthorized'}, 401
     
-    def delete(self, id):
-        if session.get('user_id'):
-            grocery_list = GroceryList.query.filter(GroceryList.id == id).first()
-            if grocery_list:
-                db.session.delete(grocery_list)
-                db.session.commit()
-                return {'Message': 'Grocery list deleted'}, 204
-            return {'error': 'Grocery list not found'}, 404
-        return {'error': 'Unauthorized'}, 401
+#     def delete(self, id):
+#         if session.get('user_id'):
+#             grocery_list = GroceryList.query.filter(GroceryList.id == id).first()
+#             if grocery_list:
+#                 db.session.delete(grocery_list)
+#                 db.session.commit()
+#                 return {'Message': 'Grocery list deleted'}, 204
+#             return {'error': 'Grocery list not found'}, 404
+#         return {'error': 'Unauthorized'}, 401
     
-    def patch(self, id):
-        if session.get('user_id'):
-            grocery_list = GroceryList.query.filter(GroceryList.id == id).first()
-            if grocery_list:
-                setattr(grocery_list, 'name', request.get_json()['name'])
-                db.session.add(grocery_list)
-                db.session.commit()
-                return grocery_list.to_dict(), 202
-            return {'error': 'grocery_list not found'}, 404
-        return {'error': 'Unauthorized'}, 401
+#     def patch(self, id):
+#         if session.get('user_id'):
+#             grocery_list = GroceryList.query.filter(GroceryList.id == id).first()
+#             if grocery_list:
+#                 setattr(grocery_list, 'name', request.get_json()['name'])
+#                 db.session.add(grocery_list)
+#                 db.session.commit()
+#                 return grocery_list.to_dict(), 202
+#             return {'error': 'grocery_list not found'}, 404
+#         return {'error': 'Unauthorized'}, 401
 
-class GroceryItemByID(Resource):
+# class GroceryItemByID(Resource):
 
-    def delete(self, id):
-        if session.get('user_id'):
-            grocery_item = GroceryItem.query.filter(GroceryItem.id == id).first()
-            if grocery_item:
-                db.session.delete(grocery_item)
-                db.session.commit()
-                return {'Message': 'Grocery item deleted'}, 204
-            return {'error': 'Grocery item not found'}, 404
-        return {'error': 'Unauthorized'}, 401
+#     def delete(self, id):
+#         if session.get('user_id'):
+#             grocery_item = GroceryItem.query.filter(GroceryItem.id == id).first()
+#             if grocery_item:
+#                 db.session.delete(grocery_item)
+#                 db.session.commit()
+#                 return {'Message': 'Grocery item deleted'}, 204
+#             return {'error': 'Grocery item not found'}, 404
+#         return {'error': 'Unauthorized'}, 401
 
 class Events(Resource):
 
@@ -356,9 +356,9 @@ api.add_resource(ListByID, '/lists/<int:id>')
 api.add_resource(TasksById, '/tasks/<int:task_id>')
 
 # grocery list views
-api.add_resource(GroceryLists, '/grocery_lists', endpoint='grocery_lists')
-api.add_resource(GroceryListByID, '/grocery_lists/<int:id>')
-api.add_resource(GroceryItemByID, '/grocery_item/<int:id>')
+# api.add_resource(GroceryLists, '/grocery_lists', endpoint='grocery_lists')
+# api.add_resource(GroceryListByID, '/grocery_lists/<int:id>')
+# api.add_resource(GroceryItemByID, '/grocery_item/<int:id>')
 
 api.add_resource(Days, '/days', endpoint='days')
 api.add_resource(DaysByID, '/days/<int:id>')
