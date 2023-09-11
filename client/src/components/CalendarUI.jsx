@@ -6,13 +6,13 @@ import 'react-calendar/dist/Calendar.css'
 
 function CalendarUI({user}){
 
-    const [selDate, setSelDate] = useState(new Date().toDateString())
+    const [selDate, setSelDate] = useState(new Date())
 
     return(
-        <div className='flex flex-col'>
+        <div className='flex flex-col mb-10'>
             <Calendar 
                 onClickDay={(e) => {
-                    setSelDate(e.toDateString())}}
+                    setSelDate(e)}}
                 />
                 <DayUI selDate={selDate} user={user}/>
         </div>

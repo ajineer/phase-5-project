@@ -6,7 +6,6 @@ import Home from './components/Home'
 import Signup from './components/Signup'
 import Login from './components/Login'
 import ListUI from './components/ListUI'
-import GroceryUI from './components/GroceryUI'
 import CalendarUI from './components/CalendarUI'
 
 
@@ -46,7 +45,7 @@ function App() {
             <Route exact path='/' element={ <Home/>}/>
             <Route path='/signup' element={ <Signup/>}/>
             <Route path='/login'  element={ <Login onLogin={setUser}/>}/>
-            <Route path='/lists' element={ <ListUI user={user}/>}/>
+            <Route path='/lists' element={ user===null?<h2>...loading</h2>:<ListUI user={user}/>}/>
             <Route path='/calendar' element={<CalendarUI user={user}/>}></Route>
           </Routes>
         </section>

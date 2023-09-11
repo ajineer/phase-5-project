@@ -270,6 +270,7 @@ class Events(Resource):
             try:
                 new_event = Event(
                     user_id = session['user_id'],
+                    date = request.get_json()['date'],
                     name = request.get_json()['name'],
                     start = request.get_json()['start'],
                     end = request.get_json()['end']
@@ -360,8 +361,10 @@ api.add_resource(TasksById, '/tasks/<int:task_id>')
 # api.add_resource(GroceryListByID, '/grocery_lists/<int:id>')
 # api.add_resource(GroceryItemByID, '/grocery_item/<int:id>')
 
-api.add_resource(Days, '/days', endpoint='days')
-api.add_resource(DaysByID, '/days/<int:id>')
+# api.add_resource(Days, '/days', endpoint='days')
+# api.add_resource(DaysByID, '/days/<int:id>')
+
+api.add_resource(Events, '/events', endpoint='events')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

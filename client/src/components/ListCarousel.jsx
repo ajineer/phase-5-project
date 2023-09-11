@@ -9,7 +9,7 @@ function ListCarousel({user}){
     const [current, setCurrent] = useState(0)
     const [toggle, setToggle] = useState(false)
     const [selList, setSelList] = useState(undefined)
-    const [currentTasks, setCurrentTasks] = useState([])
+    const [currentTasks, setCurrentTasks] = useState(undefined)
 
     function prev(){
         current === 0 ? setCurrent(lists.length-1) : setCurrent(current-1)
@@ -25,10 +25,13 @@ function ListCarousel({user}){
 
     
     useEffect(()=>{
-        if(user){
+        if(user && user.lists){
+            console.log(user.lists[0])
             setLists(user.lists)
             setSelList(user.lists[0])
-            setCurrentTasks(user.lists[0].tasks)
+            if (user.lists[0].length !==0){
+                setCurrentTasks(user.lists[0].tasks)
+            }
         }
     },[user])
 

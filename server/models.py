@@ -59,7 +59,7 @@ class List(db.Model, SerializerMixin):
 
     __tablename__ = 'lists'
     
-    serialize_rules = ('-user', '-events', '-day',)
+    serialize_rules = ('-user', '-events',)
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
@@ -149,13 +149,13 @@ class Event(db.Model, SerializerMixin):
 
     __tablename__ = 'events'
 
-    serialize_rules = ('-user', '-day')
+    serialize_rules = ('-user',)
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.String)
-    start = db.Column(db.DateTime, nullable = False, default=datetime.utcnow)
-    end = db.Column(db.db.DateTime, nullable = False)
+    start = db.Column(db.String, nullable = False)
+    end = db.Column(db.String, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # day_id = db.Column(db.Integer, db.ForeignKey('days.id'))
 
@@ -170,16 +170,3 @@ class Event(db.Model, SerializerMixin):
         if not name or not isinstance(name, str):
             raise ValueError('Event name must be non-empty string.')
         return name
-    
-# class Day(db.Model, SerializerMixin):
-    
-#     __tablename__ = 'days'
-#     serialize_rules = ('-user',)
-
-#     id = db.Column(db.Integer, primary_key = True)
-#     date = db.Column(db.String)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-#     lists = db.relationship('List', back_populates='day')
-#     events = db.relationship('Event', back_populates='day')
-#     grocery_lists = db.relationship('GroceryList', back_populates='day')
-#     user = db.relationship('User', back_populates='days')
