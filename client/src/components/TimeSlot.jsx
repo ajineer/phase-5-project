@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react"
 
-function TimeSlot({time, userEvents, selDate, viewEvent}){
+function TimeSlot({time, calEvents, selDate, setSelEvent, setRenderEvent}){
 
     const [event, setEvent] = useState({})
 
     useEffect(() => {
-        const foundEvent = userEvents.find((userEvent) => userEvent.start === time && userEvent.date === selDate.toDateString())
+        const foundEvent = calEvents.find((userEvent) => userEvent.start === time && userEvent.date === selDate.toDateString())
         setEvent(foundEvent)
-    },[selDate, time, userEvents])
+    },[selDate, time, calEvents])
 
     return(
 
-        <div>
+        <li className="flex border-2 border-blue-800 p-1">
             {time}
             {event?
-            <div className="bg-red-500">
-                {event.name}
-                <button onClick={() => viewEvent(event)}>View</button>
+            <div className="flex bg-blue-200 ml-auto justify-center">
+                <span className="mt-auto mb-auto text-sm text-left pl-1 pr-5">{event.name}, {event.start}-{event.end}</span>
+                <button className='bg-gray-200 text-xs p-1 m-auto border-2 border-gray-600 rounded' onClick={() => (setRenderEvent(event))}>View</button>
             </div>:
             null}
-        </div>
+        </li>
     )
 }
 

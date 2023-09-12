@@ -289,9 +289,10 @@ class EventsByID(Resource):
             event = Event.query.filter(Event.id == event_id).first()
             if event:
                 setattr(event, 'name', request.get_json()['name'])
-                setattr(event, 'date', request.get_json()['date'])
                 setattr(event, 'start', request.get_json()['start'])
                 setattr(event, 'end', request.get_json()['end'])
+                addList = List.query.filter(List.id == request.get_json()['list_id']).first()
+                event.lists.append(addList)
                 db.session.add(event)
                 db.session.commit()
                 return event.to_dict(), 202
@@ -307,6 +308,7 @@ class EventsByID(Resource):
                 return {'Message': 'Event deleted'}, 204
             return {'error': 'Event not found'}, 404
         return {'error': 'Unauthorized'}, 401
+    
 
 class Days(Resource):
 
@@ -365,6 +367,7 @@ api.add_resource(TasksById, '/tasks/<int:task_id>')
 # api.add_resource(DaysByID, '/days/<int:id>')
 
 api.add_resource(Events, '/events', endpoint='events')
+api.add_resource(EventsByID, '/events/<int:event_id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

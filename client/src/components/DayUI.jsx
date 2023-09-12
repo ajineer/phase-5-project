@@ -3,13 +3,12 @@ import EventsUI from './EventsUI'
 import Event from "./Event"
 import DateTime from "./DateTime"
 
-function DayUI({selDate, user}){
+function DayUI({user, selDate, setSelEvent, selEvent, calEvents, setCalEvents}){
 
     const times = []
     const interval = 15
     const [toggle, setToggle] = useState(false)
-    const [userEvents, setUserEvents] = useState([])
-
+    const [renderEvent, setRenderEvent] = useState({})
 
     for(let hour = 0; hour <=23; hour++){
         for (let minute = 0; minute < 60; minute += interval){
@@ -21,19 +20,16 @@ function DayUI({selDate, user}){
         }
     }
 
-    useEffect(()=>{
-        setUserEvents(user.events)
-    },[])
-
     return(
-        <div>
+        <div className="flex w-[100%] h-[50%] border-2 border-orange-600">
             {toggle?
-            <EventsUI toggle={toggle} setToggle={setToggle} times={times} selDate={selDate.toDateString()}/> : 
-            <>
-                <DateTime selDate={selDate} times={times} userEvents={userEvents}/>
-                <button onClick={() => setToggle(!toggle)}>Add event</button>
-            </>}
-    </div>
+            <EventsUI toggle={toggle} setToggle={setToggle} times={times} selDate={selDate.toDateString()} calEvents={calEvents} setCalEvents={setCalEvents} setSelEvent={setSelEvent}/> : 
+            <div className="border-2 border-white w-[50%] h-[99%]">
+                <DateTime selDate={selDate} times={times} calEvents={calEvents} setSelEvent={setSelEvent} selEvent={selEvent} setRenderEvent={setRenderEvent}/>
+                <button className='bg-gray-200' onClick={() => setToggle(!toggle)}>Add event</button>
+            </div>}
+            <Event user={user} selEvent={selEvent} setSelEvent={setSelEvent} selDate={selDate} times={times} calEvents={calEvents} setCalEvents={setCalEvents} setRenderEvent={setRenderEvent} renderEvent={renderEvent}/>
+        </div>
     )
 }
 

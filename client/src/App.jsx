@@ -40,7 +40,7 @@ function App() {
         <div className='flex flex-col row-start-2 row-span-3 bg-stone-500 ml-2'>
           <Nav user={user} logout={logout}/>
         </div>
-        <section className='flex justify-center col-start-2 col-span-5 row-start-2 row-end-6 bg-orange-300 mb-2 mr-2'>
+        <section className='flex justify-center col-start-2 col-span-5 row-start-2 row-end-6 bg-orange-300 mb-2 mr-2 w-10/10]'>
           <Routes>
             <Route exact path='/' element={ <Home/>}/>
             <Route path='/signup' element={ <Signup/>}/>
