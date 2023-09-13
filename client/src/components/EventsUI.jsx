@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 
-function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setSelEvent}){
+function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEvent}){
 
     const[formData, setFormData] = useState({
         name:"",
@@ -25,7 +25,7 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setSelEvent}
         }).then(r => r.json())
         .then(event => (
             setCalEvents(prevCalEvents => [...prevCalEvents, event]),
-            setSelEvent(event)))
+            setRenderEvent(event)))
         setFormData({
             name:"",
             date: selDate,

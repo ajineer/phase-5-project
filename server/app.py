@@ -288,6 +288,14 @@ class EventsByID(Resource):
         if session.get('user_id'):
             event = Event.query.filter(Event.id == event_id).first()
             if event:
+                action = request.get_json()['action']
+                if action and action == 'remove':
+                    list_id = request.get_json()['list_id']
+                    if any(list.id == list_id for list in event.lists):
+                        event.lists = [list for list in event.lists if list.id != list_id]
+                        db.session.add(event)
+                        db.session.commit()
+                        return event.to_dict(), 202
                 setattr(event, 'name', request.get_json()['name'])
                 setattr(event, 'start', request.get_json()['start'])
                 setattr(event, 'end', request.get_json()['end'])

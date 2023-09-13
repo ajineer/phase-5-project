@@ -12,7 +12,11 @@ function CalendarUI({user}){
         const storedSelEvent = localStorage.getItem('selEvent')
         return storedSelEvent ? JSON.parse(storedSelEvent) : {}
     })
-
+    
+    useEffect(()=>{
+        localStorage.setItem('selEvent', JSON.stringify(selEvent))
+    },[selEvent])
+    
     useEffect(()=>{
         setCalEvents(user?.events.length>0 ? user.events: [])
     },[user?.events])
@@ -24,9 +28,6 @@ function CalendarUI({user}){
         return null
     }
 
-    useEffect(()=>{
-        localStorage.setItem('selEvent', JSON.stringify(selEvent))
-    },[selEvent])
 
     return(
         <div className='flex flex-col mb-10 bg-white w-[99%] h-[99%] items-center border-2 border-black'>

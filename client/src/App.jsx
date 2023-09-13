@@ -34,13 +34,13 @@ function App() {
 
   return (
     <div className='grid grid-rows-5 grid-cols-5-[1fr] bg-red-200 gap-2 h-screen'>
-        <div className='flex items-center justify-center text-5xl col-start-1 col-span-6 bg-stone-500 mt-2 ml-2 mr-2'>
+        <div className='flex items-center justify-center text-5xl col-start-1 col-span-6 bg-stone-500 mt-2 ml-2 mr-2 w-[1238px]'>
           <HeaderBar />
         </div>
         <div className='flex flex-col row-start-2 row-span-3 bg-stone-500 ml-2'>
           <Nav user={user} logout={logout}/>
         </div>
-        <section className='flex justify-center col-start-2 col-span-5 row-start-2 row-end-6 bg-orange-300 mb-2 mr-2 w-10/10]'>
+        <section className='flex justify-center col-start-2 col-span-5 row-start-2 row-end-6 bg-orange-300 mb-2 w-[1150px]'>
           <Routes>
             <Route exact path='/' element={ <Home/>}/>
             <Route path='/signup' element={ <Signup/>}/>
