@@ -1,7 +1,7 @@
 function Home(){
 
     return (
-        <h1>About Planly</h1>
+        <h1 className="w-[100%] border-2 border-red-600">About Planly</h1>
     )
 }
 

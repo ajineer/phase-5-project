@@ -11,12 +11,12 @@ function TimeSlot({time, calEvents, selDate, renderEvent, setRenderEvent}){
 
     return(
 
-        <li className="flex border-2 border-blue-800 p-1 h-[20%] w-[100%]">
+        <li className="bg-light_navy flex p-1 h-[20%] w-[100%] mt-1">
             {time}
             {event?
-            <div className="flex bg-blue-200 ml-auto justify-center overflow-hidden">
+            <div className="flex ml-auto justify-center overflow-hidden">
                 <span className="mt-auto mb-auto text-sm text-left pl-1 pr-5">{event.name}, {event.start}-{event.end}</span>
-                <button className='bg-gray-200 text-xs p-1 m-auto border-2 border-gray-600 rounded' onClick={() => (setRenderEvent(event))}>View</button>
+                <button className='bg-gray-200 text-xs p-1 m-auto' onClick={() => (setRenderEvent(event))}>View</button>
             </div>:
             null}
         </li>

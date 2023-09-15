@@ -77,7 +77,7 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
     },[selDate])
 
     return (
-        <div className="flex justify-center bg-gray-400 h-[85%] w-[49%] mt-[3%] ml-auto mr-auto border-2 border-pink-500">
+        <div className="flex justify-center bg-gray-400 h-[85%] w-[49%] mt-[3%] ml-auto mr-auto">
             <div className={`${toggle?'hidden':''} text-sm w-[50%] h-[90%] border-2 border-red-800 bg-blue-300`}>
                 {renderEvent?
                 <div className="flex flex-col">
@@ -120,9 +120,9 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
                 </div>:
                 <h3 className="text-center mt-[5%]">No event selected</h3>}
             </div>
-            <div className={`${toggle?'':'hidden'} flex flex-col w-[50%] h-[99%] bg-pink-200 items-center justify-center`}>
+            <div className={`${toggle?'':'hidden'} flex flex-col w-[50%] h-[99%] items-center justify-center`}>
                 <h2>{renderEvent? renderEvent.date: null}</h2>
-                <form className='flex flex-col bg-blue-300 p-1' onSubmit={handleSubmit}>
+                <form className='flex flex-col bg-white bg-opacity-50 p-1' onSubmit={handleSubmit}>
                     <label>Name</label>
                     <input
                         type='text'

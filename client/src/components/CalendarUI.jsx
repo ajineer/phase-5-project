@@ -23,14 +23,14 @@ function CalendarUI({user}){
 
     const renderTile = (date) => {
         if(calEvents.some(userEvent => userEvent.date === date.toDateString())){
-            return <h5 className='bg-pink-500 text-xs'>Event</h5>
+            return <h5 className='bg-pink-500 text-xs'>event</h5>
         }
         return null
     }
 
 
     return(
-        <div className='flex flex-col mb-10 bg-white w-[99%] h-[99%] items-center border-2 border-black'>
+        <div className='flex flex-col mb-10 w-[99%] h-[99%] items-center'>
             <Calendar 
                 tileContent={({ date }) => renderTile(date)}
                 onClickDay={(e) => {

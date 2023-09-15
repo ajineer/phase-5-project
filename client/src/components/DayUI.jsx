@@ -28,12 +28,12 @@ function DayUI({user, selDate, calEvents, setCalEvents}){
     }
 
     return(
-        <div className="flex w-[100%] h-[50%] border-2 border-orange-600">
+        <div className="flex w-[100%] h-[50%]">
             {toggle?
             <EventsUI toggle={toggle} setToggle={setToggle} times={times} selDate={selDate.toDateString()} calEvents={calEvents} setCalEvents={setCalEvents} setRenderEvent={setRenderEvent}/> : 
-            <div className="border-2 border-white w-[50%] h-[99%]">
+            <div className="w-[50%] h-[99%]">
                 <DateTime selDate={selDate} times={times} calEvents={calEvents} setRenderEvent={setRenderEvent} renderEvent={renderEvent}/>
-                <button className='bg-gray-200' onClick={() => setToggle(!toggle)}>Add event</button>
+                <button className='ml-5 bg-white hover:bg-slate-300' onClick={() => setToggle(!toggle)}>Add event</button>
             </div>}
             <Event user={user} selDate={selDate} times={times} calEvents={calEvents} setCalEvents={setCalEvents} setRenderEvent={setRenderEvent} renderEvent={renderEvent}/>
         </div>

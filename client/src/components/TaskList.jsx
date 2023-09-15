@@ -1,10 +1,25 @@
-function TaskList({list}){
+function TaskList({list, lists, setLists, current}){
+
+    function deleteList(){
+        fetch(`/api/lists/${list.id}`, {
+            method: 'DELETE'
+        }).then(r => 
+            setLists(lists.filter(l => l.id !==list.id))
+        )
+    }
 
     return (
-        list === undefined? 
-        <div className="w-15 h-25 bg-red-700 m-3">______</div> :
-        <div className={`flex flex-col bg-blue-500 w-[100px] h-[25px] m-3 p-0`}>
+        <div className={`flex flex-col bg-light_navy w-[15%] h-[80%] m-5 p-0`}>
             <h2 className="text-center">{list.name}</h2>
+            {list.tasks.length > 0?
+            <ul className="flex flex-col overflow-y-auto ml-[10%] mt-[5%]">
+                {list.tasks.map(t => 
+                    <li key={t.id}>
+                        {t.description}
+                    </li>)}
+            </ul>:null}
+            {lists.indexOf(list) === current?
+                <button className='mr-auto ml-auto mt-auto bg-stone-600 w-fit text-lg pr-[2px] pl-[2px]' onClick={() => deleteList()}>Delete</button>:null}
         </div>
     )
 }

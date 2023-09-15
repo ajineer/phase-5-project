@@ -35,7 +35,7 @@ function Login({onLogin}){
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form className='flex flex-col bg-mirky_water w-fit mr-auto ml-auto mt-[50px] p-10' onSubmit={handleSubmit}>
                 <label>Username</label>
                 <input
                     type="text"

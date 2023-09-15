@@ -17,10 +17,11 @@ function LForm({setToggle, setLists, lists}){
     }
 
     return (
-        <div className="block mt-5">
-            <form className='flex flex-col items-center bg-blue-700 p-5' onSubmit={(e) => handleSubmit(e)}>
-                <label>Enter new list name</label>
+        <div className="block mt-5 h-[100%]">
+            <form className='flex flex-col items-center p-5 h-[100%]' onSubmit={(e) => handleSubmit(e)}>
+                <label className="mt-5">Enter new list name</label>
                 <input
+                    className="mb-auto border-2 border-black"
                     type="text"
                     name='name'
                     onChange={(e) => setName(e.target.value)}

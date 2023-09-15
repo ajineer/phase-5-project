@@ -4,7 +4,7 @@ import ListCarousel from "./ListCarousel"
 function ListUI ({user}){
 
     return (
-        <div className="flex flex-col mt-10 bg-blue-200 h-[375px] p-5">
+        <div className="flex flex-col h-[99%] w-[100%] p-5">
             <ListCarousel user={user}/>
         </div>
     )

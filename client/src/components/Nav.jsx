@@ -7,27 +7,25 @@ function Nav({user, logout}){
 
         user !== null ? 
         <>
-            <h1>Navigation</h1>
-            <NavLink className="ml-4" to={"/"} exact='true'>
+            <NavLink className='flex ml-auto mr-auto mt-[10px] hover:bg-leafy_green w-[80%] justify-center' to={"/"} exact='true'>
                 Home
             </NavLink>
-            <NavLink to={'/lists'}>
+            <NavLink className='flex ml-auto mr-auto hover:bg-leafy_green w-[80%] justify-center' to={'/lists'}>
                 Lists
             </NavLink>
-            <NavLink to={'/calendar'}>
+            <NavLink className='flex ml-auto mr-auto hover:bg-leafy_green w-[80%] justify-center' to={'/calendar'}>
                 Calendar
             </NavLink>
-            <button onClick={logout}>Logout</button>
+            <button className='flex ml-auto mr-auto mt-[10px] hover:bg-leafy_green w-[80%] justify-center' onClick={logout}>Logout</button>
         </> :
         <>
-            <h1>Navigation</h1>
-            <NavLink to={"/"} exact='true'>
+            <NavLink className='flex ml-auto mr-auto hover:bg-leafy_green w-[80%] justify-center' to={"/"} exact='true'>
                 <span>Home</span>
             </NavLink>
-            <NavLink to={'/signup'}>
+            <NavLink className='flex ml-auto mr-auto hover:bg-leafy_green w-[80%] justify-center' to={'/signup'}>
                 <span>Sign up</span>
             </NavLink>
-            <NavLink to={'/login'}>
+            <NavLink className='flex ml-auto mr-auto hover:bg-leafy_green w-[80%] justify-center' to={'/login'}>
                 <span>Sign in</span>
             </NavLink>
         </>

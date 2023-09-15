@@ -36,11 +36,12 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEve
     }
 
     return(
-        <div className='flex flex-col w-[50%] bg-pink-200 items-center justify-center'>
+        <div className='flex flex-col w-[50%] items-center justify-center'>
             <h2>{selDate}</h2>
-            <form className='flex flex-col bg-blue-300 w-[60%] p-1' onSubmit={handleSubmit}>
+            <form className='flex flex-col bg-white bg-opacity-50 w-[60%] p-5' onSubmit={handleSubmit}>
                 <label>Enter event name</label>
                 <input
+                    placeholder="event name"
                     type='text'
                     name='name'
                     onChange={handleChange}
@@ -52,7 +53,6 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEve
                     name='start'
                     value={formData.start}
                     onChange={(e) => handleChange(e)}>
-                        <option>Select start</option>
                         {times.map((time, index) => <option key={index}>{time}</option>)}
                 </select>
                 <label>Enter end time</label>
@@ -61,10 +61,9 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEve
                     name='end'
                     value={formData.end}
                     onChange={(e) => handleChange(e)}>
-                        <option>Select start</option>
                         {times.map((time, index) => <option key={index}>{time}</option>)}
                 </select>
-                <input type='submit' onSubmit={handleSubmit} value="Add"></input>
+                <input className='bg-white hover:bg-slate-300 w-fit ml-auto mr-auto mt-5 pl-2 pr-2' type='submit' onSubmit={handleSubmit} value="Add"></input>
             </form>
             <button className='bg-gray-200 w-fit mt-4 pt-1 pb-1 pr-3 pl-3 border-2 border-black rounded' onClick={() => setToggle(!toggle)}>back</button>
         </div>
