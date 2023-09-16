@@ -9,7 +9,7 @@ function TaskList({list, lists, setLists, current}){
     }
 
     return (
-        <div className={`flex flex-col bg-light_navy w-[15%] h-[80%] m-5 p-0`}>
+        <div className={`flex flex-col bg-light_navy h-[80%] m-5 p-0`}>
             <h2 className="text-center">{list.name}</h2>
             {list.tasks.length > 0?
             <ul className="flex flex-col overflow-y-auto ml-[10%] mt-[5%]">
