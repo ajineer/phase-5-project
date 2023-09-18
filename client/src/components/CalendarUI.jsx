@@ -8,14 +8,6 @@ function CalendarUI({user}){
 
     const [selDate, setSelDate] = useState(new Date())
     const [calEvents, setCalEvents] = useState([])
-    const [selEvent, setSelEvent] = useState(()=>{
-        const storedSelEvent = localStorage.getItem('selEvent')
-        return storedSelEvent ? JSON.parse(storedSelEvent) : {}
-    })
-    
-    useEffect(()=>{
-        localStorage.setItem('selEvent', JSON.stringify(selEvent))
-    },[selEvent])
     
     useEffect(()=>{
         setCalEvents(user?.events.length>0 ? user.events: [])
@@ -38,8 +30,6 @@ function CalendarUI({user}){
                 />
             <DayUI 
                 selDate={selDate} 
-                selEvent={selEvent} 
-                setSelEvent={setSelEvent} 
                 setCalEvents={setCalEvents} 
                 calEvents={calEvents}
                 user={user}/>

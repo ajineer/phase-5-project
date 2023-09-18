@@ -4,15 +4,19 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
 
     const [toggle, setToggle] = useState(false)
     const [formData, setFormData] = useState({
-        name: renderEvent? renderEvent.name : '', 
-        start: renderEvent? renderEvent.start : '',
-        end: renderEvent? renderEvent.end : '',
+        name: renderEvent? renderEvent.name:'', 
+        start: renderEvent? renderEvent.start:'',
+        end: renderEvent? renderEvent.end:'',
         action: ''})
 
     function handleChange(e){
         const { name, value } = e.target
         setFormData({...formData, [name]:value})
     }
+
+    useEffect(()=>{
+        setFormData({ ...formData, ...renderEvent})
+    },[renderEvent])
 
     function handleSubmit(e){
         e.preventDefault()
@@ -33,8 +37,8 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
         fetch(`/api/events/${renderEvent.id}`,{
             method: 'DELETE'
         })
-        setRenderEvent({})
         setCalEvents(calEvents.filter(event => event.id !== renderEvent.id))
+        setRenderEvent(null)
     }
 
     function addList(list){
@@ -98,11 +102,11 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
                                             <button className="bg-gray-200 border-2 border-black rounded ml-auto" onClick={() => removeList(list)}>X</button>
                                         </h3>)}
                                 </div>:
-                                    <h3 className="m-auto">No Lists</h3>}
+                                <h3 className="m-auto">No Lists</h3>}
                                 <div>
                                     <ul>
                                         {user && user.lists.length > 0 ? 
-                                            user.lists.filter((list) => !renderEvent.lists.some((eventList) => eventList.id === list.id)).map((list) =>(
+                                            user.lists.filter((list) => !renderEvent.lists?.some((eventList) => eventList.id === list.id)).map((list) =>(
                                                 <li key={list.id}>
                                                     {list.name}
                                                     <button className='bg-gray-500' onClick={()=>(addList(list))}>Add list</button>

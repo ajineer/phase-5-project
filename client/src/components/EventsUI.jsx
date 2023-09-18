@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEvent}){
@@ -17,22 +17,27 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEve
 
     function handleSubmit(e){
         e.preventDefault()
-        fetch('/api/events', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },body: JSON.stringify(formData)
-        }).then(r => r.json())
-        .then(event => (
-            setCalEvents(prevCalEvents => [...prevCalEvents, event]),
-            setRenderEvent(event)))
-        setFormData({
-            name:"",
-            date: selDate,
-            start: "",
-            end: ""
-        })
-        setToggle(!toggle)
+        if(formData.start === '' || formData.end === ''){
+            alert('Please select valid start/end times!')
+        }else{
+
+            fetch('/api/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },body: JSON.stringify(formData)
+            }).then(r => r.json())
+            .then(event => (
+                setCalEvents(prevCalEvents => [...prevCalEvents, event]),
+                setRenderEvent(event)))
+                setFormData({
+                    name:"",
+                    date: selDate,
+                    start: "",
+                    end: ""
+                })
+                setToggle(!toggle)
+        }
     }
 
     return(
@@ -53,6 +58,7 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEve
                     name='start'
                     value={formData.start}
                     onChange={(e) => handleChange(e)}>
+                        <option>Select Start</option>
                         {times.map((time, index) => <option key={index}>{time}</option>)}
                 </select>
                 <label>Enter end time</label>
@@ -61,6 +67,7 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEve
                     name='end'
                     value={formData.end}
                     onChange={(e) => handleChange(e)}>
+                        <option>Select End</option>
                         {times.map((time, index) => <option key={index}>{time}</option>)}
                 </select>
                 <input className='bg-white hover:bg-slate-300 w-fit ml-auto mr-auto mt-5 pl-2 pr-2' type='submit' onSubmit={handleSubmit} value="Add"></input>
