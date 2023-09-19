@@ -16,7 +16,7 @@ function TimeSlot({time, calEvents, selDate, renderEvent, setRenderEvent}){
             {event?
             <div className="flex ml-auto justify-center overflow-hidden">
                 <span className="mt-auto mb-auto text-sm text-left pl-1 pr-5">{event.name}, {event.start}-{event.end}</span>
-                <button className='bg-gray-200 text-xs p-1 m-auto' onClick={() => (setRenderEvent(event))}>View</button>
+                <button className='bg-gray-200 text-xs p-1 m-auto hover:bg-white' onClick={() => (setRenderEvent(event))}>View</button>
             </div>:
             null}
         </li>

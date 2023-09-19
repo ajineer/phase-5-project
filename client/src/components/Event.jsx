@@ -72,7 +72,9 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
                 action: 'remove',
             })
         }).then(r => r.json())
-        .then(eventData => (setCalEvents([...calEvents, eventData]), setRenderEvent(eventData)))
+        .then(eventData => (
+            setCalEvents([...calEvents, eventData]), 
+            setRenderEvent(eventData)))
     }
     
     useEffect(()=>{
@@ -81,45 +83,47 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
     },[selDate])
 
     return (
-        <div className="flex justify-center bg-gray-400 h-[85%] w-[49%] mt-[3%] ml-auto mr-auto">
-            <div className={`${toggle?'hidden':''} text-sm w-[50%] h-[90%] border-2 border-red-800 bg-blue-300`}>
+        <div className="flex justify-center h-[85%] w-[49%] mt-[2%] ml-auto mr-auto">
+            <div className={`${toggle?'hidden':''} text-sm w-[100%] h-[100%] bg-light_navy`}>
                 {renderEvent?
                 <div className="flex flex-col">
                     <div className="flex">
-                        <section className='flex flex-col m-auto mt-[5%] ml-[10%]'>
-                            <h3>Date: {renderEvent.date}</h3>
+                        <section className='flex flex-col mt-[5%] ml-[10%] w-[50%]'>
                             <h3>Name: {renderEvent.name}</h3>
+                            <h3>Date: {renderEvent.date}</h3>
                             <h3>Start: {renderEvent.start}</h3>
                             <h3>End: {renderEvent.end}</h3>
+                            <div className="mt-3">
+                                    <button className='bg-gray-200 text-lg mr-1 pl-1 pr-1 border-2 border-black rounded hover:bg-white' onClick={() => setToggle(true)}>{'\u270E'}</button>
+                                    <button className='bg-gray-200 text-lg ml-1 pl-1 pr-1 border-2 border-black rounded hover:bg-white' onClick={() => handleDelete()}>X</button>
+                            </div>
                         </section>
-                        <section className="flex flex-col m-auto mt-[5%]">
-                            <h3 className="ml-[10%]">Lists</h3>
+                        <section className="flex flex-col mr-[10%] mt-[5%] w-[50%] h-[100%]">
+                            <h3 className="mb-1">Lists:</h3>
                             {renderEvent.lists && renderEvent.lists.length > 0?
-                                <div className="flex flex-col ml-[10%]">
+                                <div className="flex flex-col ml-[10%] h-[50%] border-2 border-black">
                                     {renderEvent.lists.map(list => 
                                         <h3 className='flex' key={list.id}>
                                             {list.name}
-                                            <button className="bg-gray-200 border-2 border-black rounded ml-auto" onClick={() => removeList(list)}>X</button>
+                                            <button className="bg-gray-200 pl-1 pr-1 border-2 border-black rounded ml-auto hover: bg-white" onClick={() => removeList(list)}>X</button>
                                         </h3>)}
                                 </div>:
-                                <h3 className="m-auto">No Lists</h3>}
+                                <div className="flex m-auto h-[50%] w-[100%]">No Lists</div>}
                                 <div>
-                                    <ul>
+                                    <ul className="w-[100%] ml-0">
                                         {user && user.lists.length > 0 ? 
                                             user.lists.filter((list) => !renderEvent.lists?.some((eventList) => eventList.id === list.id)).map((list) =>(
-                                                <li key={list.id}>
-                                                    {list.name}
-                                                    <button className='bg-gray-500' onClick={()=>(addList(list))}>Add list</button>
+                                                <li className="flex mt-1" key={list.id}>
+                                                    <span className="mr-auto">
+                                                        {list.name}
+                                                    </span>
+                                                    <button className='ml-auto bg-gray-200 hover:bg-white' onClick={()=>(addList(list))}>Add list</button>
                                                 </li>
                                             )):
                                         <h3>No lists to add</h3>}
                                     </ul>
                                 </div>
                         </section>
-                    </div>
-                    <div className="mt-3 m-auto">
-                            <button className='bg-gray-200 text-lg mr-1 pl-1 pr-1 border-2 border-black rounded' onClick={() => setToggle(true)}>{'\u270E'}</button>
-                            <button className='bg-gray-200 text-lg ml-1 pl-1 pr-1 border-2 border-black rounded' onClick={() => handleDelete()}>X</button>
                     </div>
                 </div>:
                 <h3 className="text-center mt-[5%]">No event selected</h3>}

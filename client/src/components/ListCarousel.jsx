@@ -23,7 +23,6 @@ function ListCarousel({user}){
         setLeft(left === 0? index : left-1)
     }
 
-
     
     useEffect(()=>{
         if(user && user.lists.length>0){
@@ -51,6 +50,7 @@ function ListCarousel({user}){
             <div className="flex m-auto h-[100%] w-[100%] align-center justify-center">
                 {!toggle?
                 <div className="flex flex-col w-[100%] h-[100%]">
+                    
                     <Tasks list={lists[current]} setLists={setLists} lists={lists}/>
                     <button className='bg-white bg-opacity-50 hover:bg-slate-300 w-fit pr-2 pl-2 ml-auto mr-auto mt-[20px]' onClick={() => setToggle(!toggle)}>Add list</button>
                 </div>:
