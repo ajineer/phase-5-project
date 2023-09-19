@@ -101,7 +101,7 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
                         <section className="flex flex-col mr-[10%] mt-[5%] w-[50%] h-[100%]">
                             <h3 className="mb-1">Lists:</h3>
                             {renderEvent.lists && renderEvent.lists.length > 0?
-                                <div className="flex flex-col ml-[10%] h-[50%] border-2 border-black">
+                                <div className="flex flex-col ml-[10%] h-[50%]">
                                     {renderEvent.lists.map(list => 
                                         <h3 className='flex' key={list.id}>
                                             {list.name}

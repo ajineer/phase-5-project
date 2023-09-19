@@ -14,7 +14,7 @@ function TaskList({list, lists, setLists, current}){
             {list.tasks.length > 0?
             <ul className="flex flex-col overflow-y-auto ml-[10%] mt-[5%]">
                 {list.tasks.map(t => 
-                    <li key={t.id}>
+                    <li className='text-xs max-w-[12ch]' key={t.id}>
                         {t.description}
                     </li>)}
             </ul>:null}
