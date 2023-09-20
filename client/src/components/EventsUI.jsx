@@ -41,7 +41,7 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEve
     }
 
     return(
-        <div className='flex flex-col w-[50%] items-center justify-center'>
+        <div className='flex flex-col w-[50%] h-[90%] items-center justify-center ml-auto mr-auto'>
             <h2>{selDate}</h2>
             <form className='flex flex-col bg-white bg-opacity-50 w-[60%] p-5' onSubmit={handleSubmit}>
                 <label>Enter event name</label>
@@ -72,7 +72,6 @@ function EventsUI({selDate, times, toggle, setToggle, setCalEvents, setRenderEve
                 </select>
                 <input className='bg-white hover:bg-slate-300 w-fit ml-auto mr-auto mt-5 pl-2 pr-2' type='submit' onSubmit={handleSubmit} value="Add"></input>
             </form>
-            <button className='bg-gray-200 w-fit mt-4 pt-1 pb-1 pr-3 pl-3 border-2 border-black rounded' onClick={() => setToggle(!toggle)}>back</button>
         </div>
     )
 }

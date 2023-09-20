@@ -89,9 +89,9 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
                 <div className="flex flex-col">
                     <div className="flex">
                         <section className='flex flex-col mt-[5%] ml-[10%] w-[50%]'>
-                            <h3>Name: {renderEvent.name}</h3>
-                            <h3>Date: {renderEvent.date}</h3>
-                            <h3>Start: {renderEvent.start}</h3>
+                            <h3>Name: {renderEvent?.name}</h3>
+                            <h3>Date: {renderEvent?.date}</h3>
+                            <h3>Start: {renderEvent?.start}</h3>
                             <h3>End: {renderEvent?.end}</h3>
                             <div className="mt-3">
                                     <button className='bg-gray-200 text-lg mr-1 pl-1 pr-1 border-2 border-black rounded hover:bg-white' onClick={() => setToggle(true)}>{'\u270E'}</button>
@@ -102,7 +102,7 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
                         </section>
                         <section className="flex flex-col mr-[10%] mt-[5%] w-[50%] h-[100%]">
                             <h3 className="mb-1">Lists:</h3>
-                            {renderEvent.lists && renderEvent.lists.length > 0?
+                            {renderEvent?.lists && renderEvent?.lists.length > 0?
                                 <div className="flex flex-col ml-[10%] h-[50%]">
                                     {renderEvent.lists.map(list => 
                                         <h3 className='flex' key={list.id}>

@@ -207,17 +207,21 @@ class EventsByID(Resource):
                 if action and action == 'remove':
                     list_id = request.get_json()['list_id']
                     if any(list.id == list_id for list in event.lists):
-                        event.lists = [list for list in event.lists if list.id != list_id]
+                        event.lists = [l for l in event.lists if l.id != list_id]
                         db.session.add(event)
                         db.session.commit()
                         return event.to_dict(), 202
+                elif action and action == 'add':
+                    addList = List.query.filter(List.id == request.get_json()['list_id']).first()
+                    if addList.id == any(list.id == addList.id for list in event.lists):
+                        return {'error': 'cannot add same list more than once!'}, 418
+                    event.lists.append(addList)
+                    db.session.add(event)
+                    db.session.commit()
+                    return event.to_dict(), 202
                 setattr(event, 'name', request.get_json()['name'])
                 setattr(event, 'start', request.get_json()['start'])
                 setattr(event, 'end', request.get_json()['end'])
-                addList = List.query.filter(List.id == request.get_json()['list_id']).first()
-                if addList.id == any(list.id == addList.id for list in event.lists):
-                    return {'error': 'cannot add same list more than once!'}, 418
-                event.lists.append(addList)
                 db.session.add(event)
                 db.session.commit()
                 return event.to_dict(), 202
@@ -282,14 +286,6 @@ api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Lists, '/lists', endpoint='lists')
 api.add_resource(ListByID, '/lists/<int:id>')
 api.add_resource(TasksById, '/tasks/<int:task_id>')
-
-# grocery list views
-# api.add_resource(GroceryLists, '/grocery_lists', endpoint='grocery_lists')
-# api.add_resource(GroceryListByID, '/grocery_lists/<int:id>')
-# api.add_resource(GroceryItemByID, '/grocery_item/<int:id>')
-
-# api.add_resource(Days, '/days', endpoint='days')
-# api.add_resource(DaysByID, '/days/<int:id>')
 
 api.add_resource(Events, '/events', endpoint='events')
 api.add_resource(EventsByID, '/events/<int:event_id>')
