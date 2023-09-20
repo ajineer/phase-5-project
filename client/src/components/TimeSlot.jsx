@@ -106,7 +106,7 @@ function TimeSlot({time, times, calEvents, setCalEvents, selDate, renderEvent, s
             </li>
             {isOpen && renderEvent &&
 
-            <div className="w-[100%]">
+            <div className={`w-[100%]`}>
 
                 <div className={`grid grid-row-[1fr, 1fr, 1fr, 1fr] grid-col-[1fr, 1fr, 1fr] w-[100%] bg-mirky_water mt-1`}>
                     <div className="col-start-1 col-end-1 row-start-1 row-end-3 w-[90%]">
