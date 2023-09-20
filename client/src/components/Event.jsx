@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setRenderEvent}){
+function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setRenderEvent, setToggleEvent}){
 
     const [toggle, setToggle] = useState(false)
     const [formData, setFormData] = useState({
@@ -83,7 +83,7 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
     },[selDate])
 
     return (
-        <div className="flex justify-center h-[85%] w-[49%] mt-[2%] ml-auto mr-auto">
+        <div className="flex justify-center h-[85%] w-[90%] mt-[2%] ml-auto mr-auto">
             <div className={`${toggle?'hidden':''} text-sm w-[100%] h-[100%] bg-light_navy`}>
                 {renderEvent?
                 <div className="flex flex-col">
@@ -92,10 +92,12 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
                             <h3>Name: {renderEvent.name}</h3>
                             <h3>Date: {renderEvent.date}</h3>
                             <h3>Start: {renderEvent.start}</h3>
-                            <h3>End: {renderEvent.end}</h3>
+                            <h3>End: {renderEvent?.end}</h3>
                             <div className="mt-3">
                                     <button className='bg-gray-200 text-lg mr-1 pl-1 pr-1 border-2 border-black rounded hover:bg-white' onClick={() => setToggle(true)}>{'\u270E'}</button>
                                     <button className='bg-gray-200 text-lg ml-1 pl-1 pr-1 border-2 border-black rounded hover:bg-white' onClick={() => handleDelete()}>X</button>
+                                    <button className='bg-gray-200 text-lg ml-1 pl-1 pr-1 border-2 border-black rounded hover:bg-white' onClick={() => setToggleEvent(true)}>back</button>
+                                    
                             </div>
                         </section>
                         <section className="flex flex-col mr-[10%] mt-[5%] w-[50%] h-[100%]">
@@ -125,8 +127,8 @@ function Event({user, selDate, times, setCalEvents, calEvents, renderEvent, setR
                                 </div>
                         </section>
                     </div>
-                </div>:
-                <h3 className="text-center mt-[5%]">No event selected</h3>}
+                </div>
+                :<h3 className="text-center mt-[5%]">No event selected</h3>}
             </div>
             <div className={`${toggle?'':'hidden'} flex flex-col w-[50%] h-[99%] items-center justify-center`}>
                 <h2>{renderEvent? renderEvent.date: null}</h2>

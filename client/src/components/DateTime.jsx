@@ -1,7 +1,7 @@
 import TimeSlot from "./TimeSlot"
 
 
-function DateTime({times, selDate, calEvents, setRenderEvent, renderEvent}){
+function DateTime({times, selDate, calEvents, setRenderEvent, renderEvent, setToggleEvent}){
 
     return (
 
@@ -9,7 +9,7 @@ function DateTime({times, selDate, calEvents, setRenderEvent, renderEvent}){
             <h3>{selDate.toDateString()}</h3>
             <ul className="max-h-[80%] overflow-y-auto">
                 {times.map((time, index) => 
-                <TimeSlot key={index} time={time} calEvents={calEvents} selDate={selDate} renderEvent={renderEvent} setRenderEvent={setRenderEvent}/>)}
+                <TimeSlot key={index} time={time} calEvents={calEvents} selDate={selDate} renderEvent={renderEvent} setRenderEvent={setRenderEvent} setToggleEvent={setToggleEvent}/>)}
             </ul>
         </div>
 

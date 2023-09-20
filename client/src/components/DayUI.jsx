@@ -8,6 +8,7 @@ function DayUI({user, selDate, calEvents, setCalEvents}){
     const times = []
     const interval = 15
     const [toggle, setToggle] = useState(false)
+    const [toggleEvent, setToggleEvent] = useState(true)
     const [renderEvent, setRenderEvent] = useState(()=>{
         const storedEvent = localStorage.getItem('renderEvent')
         return storedEvent ? JSON.parse(storedEvent) : {}
@@ -28,14 +29,18 @@ function DayUI({user, selDate, calEvents, setCalEvents}){
     }
 
     return(
-        <div className="flex w-[100%] h-[50%]">
+        <div className="flex w-[100%] h-[50%] justify-center">
             {toggle?
             <EventsUI toggle={toggle} setToggle={setToggle} times={times} selDate={selDate.toDateString()} calEvents={calEvents} setCalEvents={setCalEvents} setRenderEvent={setRenderEvent}/> : 
-            <div className="w-[50%] h-[99%]">
-                <DateTime selDate={selDate} times={times} calEvents={calEvents} setRenderEvent={setRenderEvent} renderEvent={renderEvent}/>
-                <button className='ml-5 bg-white hover:bg-slate-300' onClick={() => setToggle(!toggle)}>Add event</button>
+            <div className="w-[100%] h-[99%]">
+                <div className={`w-[100%] h-[100%] mt-5 ${toggleEvent?"":"hidden"}`}>
+                    <DateTime selDate={selDate} times={times} calEvents={calEvents} setRenderEvent={setRenderEvent} renderEvent={renderEvent} setToggleEvent={setToggleEvent}/>
+                    <button className='ml-5 mb-10 bg-white hover:bg-slate-300' onClick={() => setToggle(!toggle)}>Add event</button>
+                </div>
+                <div className={`w-[100%] h-[100%] ${toggleEvent?"hidden":""}`}>
+                    <Event user={user} selDate={selDate} times={times} calEvents={calEvents} setCalEvents={setCalEvents} setRenderEvent={setRenderEvent} renderEvent={renderEvent} setToggleEvent={setToggleEvent}/>
+                </div>
             </div>}
-            <Event user={user} selDate={selDate} times={times} calEvents={calEvents} setCalEvents={setCalEvents} setRenderEvent={setRenderEvent} renderEvent={renderEvent}/>
         </div>
     )
 }

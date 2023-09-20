@@ -60,7 +60,7 @@ function Tasks({list, setLists, lists}){
                                 onChange={(e) => handleSearch(e)}>
                             </input>
                     </div>
-                    <div className="flex flex-col border-2 border-black items-center h-[50%] w-[90%]">
+                    <div className="flex flex-col border-2 border-black items-center h-[100%] w-[90%]">
                         {list.tasks.length!==0?
                             <ul className="overflow-y-scroll h-[80%] mt-5 w-[80%]">
                                 {search===''?
