@@ -12,6 +12,13 @@ import CalendarUI from './components/CalendarUI'
 function App() {
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
+  const [lists, setLists] = useState([])
+
+  useEffect(()=>{
+    if(user && user.lists.length>0){
+        setLists(user.lists)
+    }
+    },[user])
 
     useEffect(() => {
       async function fetchData(){
@@ -19,6 +26,8 @@ function App() {
         if (response.ok){
           const data = await response.json() 
           setUser(data)
+        }else{
+          navigate('/')
         }
       }
       fetchData()
@@ -33,7 +42,7 @@ function App() {
     }
 
   return (
-  <div className="grid grid-rows-[1fr, 4fr, 1fr] grid-cols-[1fr, 5fr] bg-gradient-radial from-white to-mirky_water gap-2 h-screen">
+  <div className="grid grid-rows-[1fr, 4fr, 1fr] grid-cols-[1fr, 5fr] bg-gradient-radial from-white to-mirky_water gap-2 h-screen font-sans">
     <header className='flex justify-center row-start-1 row-end-1 col-start-1 col-end-6 h-[19vh] w-[100%] bg-white bg-opacity-50'>
       <HeaderBar/>
     </header>
@@ -45,8 +54,8 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login onLogin={setUser} />} />
-        <Route path="/lists" element={user === null ? <h2>...loading</h2> : <ListUI user={user} />} />
-        <Route path="/calendar" element={<CalendarUI user={user} />} />
+        <Route path="/lists" element={user === null ? <h2>...loading</h2> : <ListUI user={user} lists={lists} setLists={setLists}/>} />
+        <Route path="/calendar" element={<CalendarUI user={user} lists={lists}/>} />
       </Routes>
     </main>
   </div>

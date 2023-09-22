@@ -1,7 +1,7 @@
 import TimeSlot from "./TimeSlot"
 
 
-function DateTime({times, selDate, calEvents, setCalEvents, setRenderEvent, renderEvent, user}){
+function DateTime({times, selDate, calEvents, setCalEvents, setRenderEvent, renderEvent, user, lists={lists}}){
 
     return (
 
@@ -18,7 +18,8 @@ function DateTime({times, selDate, calEvents, setCalEvents, setRenderEvent, rend
                     selDate={selDate} 
                     renderEvent={renderEvent} 
                     setRenderEvent={setRenderEvent}  
-                    user={user}/>)}
+                    user={user}
+                    lists={lists}/>)}
             </ul>
         </div>
 

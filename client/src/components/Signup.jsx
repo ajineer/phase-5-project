@@ -67,9 +67,9 @@ function Signup(){
   };
 
   return (
-    <>
+    <div className='flex flex-col ml-auto mr-auto mt-5'>
       <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
+      <form className='flex flex-col' onSubmit={handleSubmit}>
         <input
             type="text"
             name="username"
@@ -100,7 +100,7 @@ function Signup(){
         />
         <button type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
    )
 }
 

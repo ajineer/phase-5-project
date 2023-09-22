@@ -2,14 +2,13 @@ import Calendar from 'react-calendar'
 import { useState, useEffect } from 'react'
 import DayUI from './DayUI'
 import 'react-calendar/dist/Calendar.css'
-// import { Calendar, dayjsLocalizer } from 'react-big-calendar'
+//import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 
 
-function CalendarUI({user}){
+function CalendarUI({user, lists}){
 
     const [selDate, setSelDate] = useState(new Date())
     const [calEvents, setCalEvents] = useState([])
-
 
     useEffect(()=>{
         setCalEvents(user?.events.length>0 ? user.events: [])
@@ -34,7 +33,8 @@ function CalendarUI({user}){
                 selDate={selDate} 
                 setCalEvents={setCalEvents} 
                 calEvents={calEvents}
-                user={user}/>
+                user={user}
+                lists={lists}/>
         </div>
     )
 }

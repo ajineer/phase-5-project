@@ -35,7 +35,8 @@ function Login({onLogin}){
 
     return (
         <>
-            <form className='flex flex-col bg-mirky_water w-fit mr-auto ml-auto mt-[50px] p-10' onSubmit={handleSubmit}>
+            <form className='flex flex-col bg-light_navy w-fit mr-auto ml-auto mt-5 p-10 h-fit' onSubmit={handleSubmit}>
+                <h2 className='text-lg'>Login</h2>
                 <label>Username</label>
                 <input
                     type="text"
@@ -49,7 +50,7 @@ function Login({onLogin}){
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     />
-                <button type="submit">Submit</button>
+                <button className="ml-auto mr-auto mt-2 w-min pl-4 pr-4 bg-gray-300 hover:bg-white" type="submit">Submit</button>
             </form>
         </>
     )       

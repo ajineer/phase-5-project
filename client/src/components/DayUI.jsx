@@ -2,12 +2,11 @@ import { useState, useEffect } from "react"
 import EventsUI from './EventsUI'
 import DateTime from "./DateTime"
 
-function DayUI({user, selDate, calEvents, setCalEvents}){
+function DayUI({user, selDate, calEvents, setCalEvents, lists}){
 
     const times = []
     const interval = 15
     const [toggle, setToggle] = useState(false)
-    const [toggleEvent, setToggleEvent] = useState(true)
     const [renderEvent, setRenderEvent] = useState(()=>{
         const storedEvent = localStorage.getItem('renderEvent')
         return storedEvent ? JSON.parse(storedEvent) : {}
@@ -45,7 +44,8 @@ function DayUI({user, selDate, calEvents, setCalEvents}){
                 setCalEvents={setCalEvents}
                 setRenderEvent={setRenderEvent} 
                 renderEvent={renderEvent} 
-                user={user}/>}
+                user={user}
+                lists={lists}/>}
             <button className='ml-auto mr-auto w-fit mb-10 bg-white hover:bg-slate-300' onClick={() => setToggle(!toggle)}>{!toggle?'Add event':'Back'}</button>
         </div>
     )

@@ -3,9 +3,9 @@ import TaskList from "./TaskList"
 import Tasks from "./Tasks"
 import LForm from "./LForm"
 
-function ListCarousel({user}){
+function ListCarousel({user, lists, setLists}){
 
-    const [lists, setLists] = useState([])
+    // const [lists, setLists] = useState([])
     const [toggle, setToggle] = useState(false)
     const [index, setIndex] = useState(lists.length>3 ? lists.length-1 : 2)
     const [current, setCurrent] = useState(0)
@@ -22,20 +22,16 @@ function ListCarousel({user}){
         setRight(right === 0? index : right-1)
         setLeft(left === 0? index : left-1)
     }
-
     
-    useEffect(()=>{
-        if(user && user.lists.length>0){
-            setLists(user.lists)
-        }
-    },[user])
-
+    // useEffect(()=>{
+    //     if(user && user.lists.length>0){
+    //         setLists(user.lists)
+    //     }
+    // },[user])
 
     return (
 
         <div className="flex flex-col h-[100%]">
-
-                
                 <div className="flex flex-row justify-center h-[45%]">
                     <button className="mr-1 w-min pl-4 pr-4 bg-stone-500 hover:bg-stone-300"onClick={prev}>{`\u2770`}</button>
                     {[left, current, right].map((idx) => 

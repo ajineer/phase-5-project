@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 
-function TimeSlot({time, times, calEvents, setCalEvents, selDate, renderEvent, setRenderEvent, user}){
+function TimeSlot({time, times, calEvents, setCalEvents, selDate, renderEvent, setRenderEvent, user, lists}){
 
     const [event, setEvent] = useState({})
     const [isOpen, setIsOpen] = useState(false)
@@ -154,7 +154,7 @@ function TimeSlot({time, times, calEvents, setCalEvents, selDate, renderEvent, s
                                 onClick={() => handleDelete()}>X</button>
                         </div>
                     </div>   
-                    <ul className="col-start-2 col-end-2 row-start-1 row-end-4 w-[90%]">
+                    <ul className="col-start-2 col-end-2 row-start-1 row-end-4 w-[90%] overflow-y-scroll h-[90%]">
                         Lists to complete:
                         {renderEvent.lists.length>0 &&
                             renderEvent.lists.map((list) => (
@@ -164,10 +164,10 @@ function TimeSlot({time, times, calEvents, setCalEvents, selDate, renderEvent, s
                             </li>
                         ))}
                     </ul>
-                    <ul className="col-start-3 col-end-3 row-start-1 row-end-4 ml-2 w-[90%]">
+                    <ul className="col-start-3 col-end-3 row-start-1 row-end-4 ml-2 w-[90%] overflow-y-scroll h-[90%]">
                         Lists you can add:
-                        {user && user.lists?.length>0 &&
-                            user.lists.filter((list)=> !renderEvent.lists.some((eventList)=>eventList.id === list.id)).map(list => (
+                        {lists && lists.length>0 &&
+                            lists.filter((list)=> !renderEvent.lists.some((eventList)=>eventList.id === list.id)).map(list => (
                             <li className='flex flex-row' key={list.id}>
                                 {list.name}
                                 <button className='ml-auto bg-gray-200 hover:bg-white' onClick={()=>(addList(list))}>Add list</button>
