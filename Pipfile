@@ -12,6 +12,8 @@ flask-restful = "0.3.10"
 sqlalchemy = "*"
 flask-bcrypt = "*"
 flask-cors = "*"
+gunicorn = "*"
+honcho = "*"
 
 [dev-packages]
 

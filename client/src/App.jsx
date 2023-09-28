@@ -7,10 +7,12 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import ListUI from './components/ListUI'
 import CalendarUI from './components/CalendarUI'
+import useStore from './store'
 
 
 function App() {
-  const [user, setUser] = useState(null)
+  // const [user, setUser] = useState(null)
+  const { user, setUser } = useStore()
   const navigate = useNavigate()
   const [lists, setLists] = useState([])
 
