@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useStore from '../store';
 
 
 function Signup(){
@@ -11,6 +12,8 @@ function Signup(){
     password: '',
   });
 
+  const { signupForm, setSignupForm } = useStore()
+
   const cloudinaryRef = useRef()
   const widgetRef = useRef()
 
@@ -21,6 +24,7 @@ function Signup(){
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+    setSignupForm({...signupForm, [name]: value})
   };
 
   function openWidget (){
@@ -55,7 +59,6 @@ function Signup(){
         )
 
       if (response.ok) {
-        setStatus(true)
         navigate('/login')
       } else {
         const data = await response.json();
@@ -67,24 +70,27 @@ function Signup(){
   };
 
   return (
-    <div className='flex flex-col ml-auto mr-auto mt-5'>
-      <h2>Sign Up</h2>
+    <div className='flex flex-col items-center ml-auto mr-auto mt-5 bg-light_navy h-fit p-5'>
+      <h2 className='mb-5'>Welcome!</h2>
       <form className='flex flex-col' onSubmit={handleSubmit}>
+        <button
+            className='bg-white border-2 border-gray-300 rounded hover:bg-gray-300'
+            type='button'
+            name='image'
+            value={formData.image}
+            onClick={openWidget}>
+              Upload image
+        </button>
         <input
+            className='mb-1 mt-1 border-2 border-gray-300'
             type="text"
             name="username"
             placeholder="Username"
             value={formData.username}
             onChange={handleChange}
         />
-        <input 
-            type='button'
-            name='image'
-            placeholder="user profile picture"
-            value={formData.image}
-            onClick={openWidget}>
-        </input>
          <input
+            className='mb-1 border-2 border-gray-300'
             type="text"
             name="email"
             placeholder="Email"
@@ -92,13 +98,14 @@ function Signup(){
             onChange={handleChange}
         />
         <input
+            className='mb-1 border-2 border-gray-300'
             type="password"
             name="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
         />
-        <button type="submit">Sign Up</button>
+        <button className='bg-leafy_green hover:bg-green-600 w-fit ml-auto mr-auto mt-2 border-2 border-black rounded p-1' type="submit">Sign Up</button>
       </form>
     </div>
    )
