@@ -9,18 +9,11 @@ import ListUI from './components/ListUI'
 import CalendarUI from './components/CalendarUI'
 import useStore from './store'
 import { NavLink } from 'react-router-dom'
+import ListCarousel from './components/ListCarousel'
 
 function App() {
-  // const [user, setUser] = useState(null)
-  const { user, setUser } = useStore()
+  const { user, setUser, lists, setLists } = useStore()
   const navigate = useNavigate()
-  const [lists, setLists] = useState([])
-
-  useEffect(()=>{
-    if(user && user.lists.length>0){
-        setLists(user.lists)
-    }
-    },[user])
 
     useEffect(() => {
       async function fetchData(){
@@ -28,6 +21,7 @@ function App() {
         if (response.ok){
           const data = await response.json() 
           setUser(data)
+          setLists(data.lists)
         }else{
           navigate('/')
         }
@@ -41,45 +35,46 @@ function App() {
         method: 'DELETE'
       })
       navigate('/')
+      setLists([])
     }
 
   return (
-  <div className="flex flex-col bg-gradient-radial from-white to-mirky_water gap-2 h-screen font-sans">
+  <div className="flex flex-col bg-gradient-radial from-white to-mirky_water h-screen font-sans">
     <nav className='flex flex-col bg-white bg-opacity-50 max-h-[20vh]'>
-      <svg className='flex justify-center w-[100%] h-[100%] border-2 border-black bg-white'>
+      <svg className='flex justify-center w-[100%] h-[100%] bg-white'>
         <image className='w-[100%] h-[85%]' href="../../public/Logo2.png"/> 
       </svg>
     {user !== null ? 
-        <div className='flex flex-row'>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:border-black rounded' to={"/"} exact='true'>
+        <div className='flex flex-row bg-white'>
+            <NavLink className='flex justify-center m-auto w-[25vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={"/"} exact='true'>
               Home
             </NavLink>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:border-black rounded' to={'/signup'}>
+            <NavLink className='flex justify-center m-auto w-[25vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/lists'}>
               Lists
             </NavLink>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:border-black rounded' to={'/login'}>
+            <NavLink className='flex justify-center m-auto w-[25vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/calendar'}>
               Calendar
             </NavLink>
-            <button className='flex ml-auto mr-auto mt-[10px] hover:bg-leafy_green w-[80%] justify-center' onClick={logout}>Logout</button>
+            <button className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white]' onClick={logout}>Logout</button>
         </div> :
-        <div className='flex flex-row'>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:border-black rounded' to={"/"} exact='true'>
+        <div className='flex flex-row bg-white'>
+            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={"/"} exact='true'>
                 Home
             </NavLink>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:border-black rounded' to={'/signup'}>
+            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/signup'}>
                 Sign up
             </NavLink>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:border-black rounded' to={'/login'}>
+            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/login'}>
                 Login
             </NavLink>
         </div>}
     </nav>
-    <main className='flex bg-white bg-opacity-50 h-[80vh]'>
+    <main className='flex justify-center bg-white bg-opacity-50 h-[80vh]'>
       <Routes className="p-2">
         <Route exact path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login onLogin={setUser} />} />
-        <Route path="/lists" element={<ListUI user={user} lists={lists} setLists={setLists}/>} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/lists" element={<ListCarousel/>} />
         <Route path="/calendar" element={<CalendarUI user={user} lists={lists}/>} />
       </Routes>
     </main>

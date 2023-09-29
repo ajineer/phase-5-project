@@ -4,7 +4,7 @@ import useStore from '../store'
 
 
 function Login({onLogin}){
-    const { loginForm, setLoginForm, setUser } = useStore()
+    const { loginForm, setLoginForm, setUser, setLists, lists } = useStore()
     const navigate = useNavigate()
 
     function handleChange(e){
@@ -25,6 +25,7 @@ function Login({onLogin}){
                 r.json().then((user) => 
                 {
                     setUser(user)
+                    setLists(user.lists)
                     setLoginForm({username: '', password: ''})
                     navigate('/')
                 })

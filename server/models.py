@@ -23,9 +23,9 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String)
 
-    lists = db.relationship('List', back_populates='user', cascade='all, delete')
+    lists = db.relationship('List', back_populates='user', cascade='all, delete, delete-orphan')
     # grocery_lists = db.relationship('GroceryList', back_populates='user', cascade='all, delete')
-    events = db.relationship('Event', back_populates='user', cascade='all, delete')
+    events = db.relationship('Event', back_populates='user', cascade='all, delete, delete-orphan')
     # days = db.relationship('Day', back_populates='user')
 
     @hybrid_property
@@ -67,11 +67,9 @@ class List(db.Model, SerializerMixin):
     updated = db.Column(db.DateTime, onupdate=datetime.utcnow, default=datetime.utcnow)
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-    # day_id = db.Column(db.Integer, db.ForeignKey('days.id'))
     
     tasks = db.relationship('Task', back_populates='list', cascade='all, delete, delete-orphan')
     user = db.relationship('User', back_populates='lists')
-    # day = db.relationship('Day', back_populates='lists')
     events = db.relationship('Event', secondary='days', back_populates='lists')
     
 
@@ -103,47 +101,6 @@ class Task(db.Model, SerializerMixin):
             raise ValueError('Task description must be non-empty string!')
         return description
     
-
-# class GroceryList(db.Model, SerializerMixin):
-
-#     __tablename__ = 'grocery_lists'
-
-#     serialize_rules = ('-user', '-events', '-day',)
-
-#     id = db.Column(db.Integer, primary_key = True)
-#     name = db.Column(db.String, nullable = False)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
-#     day_id = db.Column(db.Integer, db.ForeignKey('days.id'))
-    
-#     user = db.relationship('User', back_populates='grocery_lists')
-#     grocery_items = db.relationship('GroceryItem', back_populates='grocery_list', cascade='all, delete, delete-orphan')
-#     day = db.relationship('Day', back_populates='grocery_lists')
-
-#     @validates('name')
-#     def validate_name(self, key, name):
-#         if not name or not isinstance(name, str):
-#             raise ValueError('Grocery list name must be non-empty string.')
-#         return name
-    
-# class GroceryItem(db.Model, SerializerMixin):
-
-#     __tablename__ = 'grocery_items'
-
-#     serialize_rules = ('-grocery_list',)
-
-#     id = db.Column(db.Integer, primary_key = True)
-#     name = db.Column(db.String, nullable = False)
-#     grocery_list_id = db.Column(db.Integer, db.ForeignKey('grocery_lists.id', ondelete='CASCADE'))
-#     price = db.Column(db.DECIMAL(precision = 3, scale=2))
-#     image = db.Column(db.String, nullable = False)    
-
-#     grocery_list = db.relationship('GroceryList', back_populates='grocery_items')
-
-#     @validates('name')
-#     def validate_name(self, key, name):
-#         if not name or not isinstance(name, str):
-#             raise ValueError('Grocery item name must be non-empty string.')
-#         return name
     
 class Event(db.Model, SerializerMixin):
 

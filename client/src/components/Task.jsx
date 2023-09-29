@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
+import useStore from "../store"
 
-function Task({task, list, setLists, lists}){
+function Task({task}){
 
-
-
-    const [toggle, setToggle] = useState(false)
+    const { lists, current, setLists, toggleEdit, setToggleEdit, taskForm, setTaskForm} = useStore()
     const [formData, setFormData] = useState({
-        description: "",
+        description: '',
         status: 0
     })
 
@@ -25,14 +24,15 @@ function Task({task, list, setLists, lists}){
                 status: e.target.checked?1:0})
         }).then(r => (r.json()))
         .then((rTask) => {
-                const updatedList = { ...list, tasks: list.tasks.map(t => t.id === task.id ? rTask : t)}
-                const updatedLists = lists.map(l => l.id === list.id ? updatedList : l)
+                const updatedList = { ...lists[current], tasks: lists[current].tasks.map(t => t.id === task.id ? rTask : t)}
+                const updatedLists = lists.map(l => l.id === lists[current].id ? updatedList : l)
                 setLists(updatedLists)
             })
     }
 
     function handleChange(e){
         const {name, value} = e.target
+        setTaskForm({...taskForm, [name]:value})
         setFormData({...formData, [name]:value})
     }
 
@@ -45,39 +45,38 @@ function Task({task, list, setLists, lists}){
             }, body: JSON.stringify(formData)
         }).then(r => r.json())
         .then((t) => {
-            const updatedList = { ...list, tasks: list.tasks.map(task => task.id === task.id ? t : task)}
-            const updatedLists = lists.map(l => l.id === list.id ? updatedList : l)
+            const updatedList = { ...lists[current], tasks: lists[current].tasks.map(task => task.id === task.id ? t : task)}
+            const updatedLists = lists.map(l => l.id === lists[current].id ? updatedList : l)
             setLists(updatedLists)
         })
-        setToggle(false)    
+        setToggleEdit(false)    
     }
         
 
     function handleDelete(task){
         fetch(`/api/tasks/${task.id}`, {
             method: 'Delete'
-        }).then(r => {
-            const updatedTasks = list.tasks.filter(t => t.id !== task.id)
-            const updatedList = {...list, tasks: updatedTasks}
-            const listIndex = lists.findIndex(l => l.id === list.id)
-            if(listIndex !== -1){
-                const updatedLists = [...lists]
-                updatedLists[listIndex] = updatedList
-                setLists(updatedLists)
-            }
         })
+        const updatedTasks = lists[current].tasks.filter(t => t.id !== task.id)
+        const updatedList = {...lists[current], tasks: updatedTasks}
+        const listIndex = lists.findIndex(l => l.id === lists[current].id)
+        if(listIndex !== -1){
+            const updatedLists = [...lists]
+            updatedLists[listIndex] = updatedList
+            setLists(updatedLists)
+        }
     }
 
     return (
         <>
             {task?
-            <li className='flex mt-5 bg-light_navy bg-opacity-50 ml-[10%] w-[80%] text-xl'>
+            <li className='flex mt-5 bg-violet rounded bg-opacity-50 ml-[10%] w-[80%] text-xl'>
                 
-                <h3 className={`mt-auto mb-auto pr-1 w-[15%] ${toggle?"hidden":""}`}>{formData.description}</h3>
-                <h3 className={`mt-auto mb-auto ml-[25%] ${toggle?"hidden":""}`}>Updated: {task.updated}</h3>
-                <div className={`flex ml-auto ${toggle?"hidden":""}`}>
+                <h3 className={`mt-auto mb-auto pr-1 w-[15%] ${toggleEdit?"hidden":""}`}>{task.description}</h3>
+                <h3 className={`mt-auto mb-auto ml-[25%] text-xs ${toggleEdit?"hidden":""}`}>Updated: {task.updated}</h3>
+                <div className={`flex ml-auto ${toggleEdit?"hidden":""}`}>
                     <button onClick={() => handleDelete(task)} className="hover:bg-blue-200 pr-3 pl-3">X</button>
-                    <button onClick={() => setToggle(!toggle)} className="hover:bg-blue-200 pr-3 pl-3">{`\u270E`}</button>
+                    <button onClick={() => setToggleEdit(!toggleEdit)} className="hover:bg-blue-200 pr-3 pl-3">{`\u270E`}</button>
                     <input
                         className="mr-3 ml-3 hover:bg-blue-200"
                         type="checkbox"
@@ -86,7 +85,7 @@ function Task({task, list, setLists, lists}){
                         name="status">
                     </input>
                 </div>
-                <form className={`flex flex-col items-center mt-5 mb-auto mt-auto ${toggle ? "" : "hidden"}`} onSubmit={(e) => handleSubmit(e)}>
+                <form className={`flex flex-col items-center mt-5 mb-auto mt-auto ${toggleEdit ? "" : "hidden"}`} onSubmit={(e) => handleSubmit(e)}>
                     <input 
                         className="mr-auto w-[100%]"
                         type='text'
@@ -95,7 +94,7 @@ function Task({task, list, setLists, lists}){
                         onChange={(e) => handleChange(e)}>
                     </input>   
                 </form>
-                <button className={`pl-2 pr-2 ml-auto ${toggle?"":"hidden"}`}onClick={() => setToggle(!toggle)}>Back</button> 
+                <button className={`pl-2 pr-2 ml-auto ${toggleEdit?"":"hidden"}`}onClick={() => setToggleEdit(!toggleEdit)}>Back</button> 
             </li>:
             <li className='flex bg-blue-600 mt-5 mr-auto w-[100%]'>
                 <h3 className={`mt-auto mb-auto mr-auto`}>________</h3>

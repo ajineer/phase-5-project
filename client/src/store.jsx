@@ -1,10 +1,30 @@
 import { create } from 'zustand'
 
 const useStore = create((set)=>({
+
+    // lists
+    current: 0,
+    setCurrent: (newCurrent) => set({ current: newCurrent }),
+    Lform: false,
+    setLForm: (newLForm) => set({ Lform: newLForm}),
+    lists: [],
+    setLists: (newLists) => set({ lists: newLists }),
+    listName: '',
+    setNewList: (newList) => set({listName: newList}),
+
+    // tasks
+    taskDesc: "",
+    setTaskDesc: (newTaskDesc) => set({ taskDesc: newTaskDesc}),
+    tSearch: "",
+    setTsearch: (newTsearch) => set({ tSearch: newTsearch}),
+    filteredTasks: [],
+    setFilteredTasks: (newFilteredTasks) => set({ filteredTasks: newFilteredTasks }),
+    toggleEdit: false,
+    setToggleEdit: (newEdit) => set({ toggleEdit: newEdit }),
+    
+    // user login and signup
     user: null,
     setUser: (newUser) => set({ user: newUser }),
-    lists: [],
-    setLists: (newLists) => set({ Lists: newLists }),
     loginForm: {username:'', password:''},
     setLoginForm: (newLoginForm) => set({ loginForm: newLoginForm}),
     signupForm: {username: '', image: '', email: '', password: '',},

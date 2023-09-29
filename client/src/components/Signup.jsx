@@ -32,7 +32,7 @@ function Signup(){
   }
 
   useEffect(() => {
-    console.log(window.cloudinary)
+    //console.log(window.cloudinary)
     cloudinaryRef.current = window.cloudinary
     widgetRef.current = cloudinaryRef.current.createUploadWidget({
         cloudName: 'dcejyrcsu',

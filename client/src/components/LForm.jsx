@@ -1,8 +1,10 @@
 import { useState } from "react"
+import useStore from "../store"
 
-function LForm({setToggle, setLists, lists}){
+function LForm(){
 
     const [name, setName] = useState('')
+    const { setLForm, setLists, lists, listName, setNewList } = useStore()
 
     function handleSubmit(e){
         e.preventDefault()
@@ -10,22 +12,27 @@ function LForm({setToggle, setLists, lists}){
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            }, body: JSON.stringify({name:name})
+            }, body: JSON.stringify({name:listName})
         }).then(r => r.json())
         .then(list => setLists([...lists, list]))
-        setToggle(false)
+        e.target.reset()
     }
 
     return (
-        <div className="block mt-5 h-[100%]">
-            <form className='flex flex-col items-center p-5 h-[100%]' onSubmit={(e) => handleSubmit(e)}>
-                <label className="mt-5">Enter new list name</label>
+        <div className="block mt-5 mb-2">
+            <form className='flex text-lg' onSubmit={(e) => handleSubmit(e)}>
                 <input
-                    className="mb-auto border-2 border-black"
                     type="text"
                     name='name'
-                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter new list"
+                    onChange={(e) => setNewList(e.target.value)}
                 ></input>
+                <input 
+                    className="bg-white rounded-r hover:bg-gray-300 pr-1 pl-1 ml-1"
+                    type='submit'
+                    value='+'
+                    onSubmit={(e) => handleSubmit(e)}>
+                </input>
             </form>
         </div>
     )
