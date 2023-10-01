@@ -109,8 +109,7 @@ class Event(db.Model, SerializerMixin):
     serialize_rules = ('-user',)
 
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String, nullable=False)
-    date = db.Column(db.String)
+    title = db.Column(db.String, nullable=False)
     start = db.Column(db.String, nullable = False)
     end = db.Column(db.String, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

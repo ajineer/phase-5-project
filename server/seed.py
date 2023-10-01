@@ -9,7 +9,7 @@ if __name__ == '__main__':
         # session.query(day).delete()
         User.query.delete()
         # db.session.commit()
-        # Event.query.delete()
+        Event.query.delete()
         List.query.delete()
         Task.query.delete()
         # db.session.commit()

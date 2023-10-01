@@ -1,10 +1,11 @@
 import React,{ useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useStore from '../store'
+import moment from 'moment'
 
 
-function Login({onLogin}){
-    const { loginForm, setLoginForm, setUser, setLists, lists } = useStore()
+function Login(){
+    const { loginForm, setLoginForm, setUser, setLists, lists, events, setEvents} = useStore()
     const navigate = useNavigate()
 
     function handleChange(e){
@@ -24,6 +25,7 @@ function Login({onLogin}){
             if (r.ok){
                 r.json().then((user) => 
                 {
+                    setEvents(user.events)
                     setUser(user)
                     setLists(user.lists)
                     setLoginForm({username: '', password: ''})

@@ -185,8 +185,7 @@ class Events(Resource):
             try:
                 new_event = Event(
                     user_id = session['user_id'],
-                    date = request.get_json()['date'],
-                    name = request.get_json()['name'],
+                    title = request.get_json()['title'],
                     start = request.get_json()['start'],
                     end = request.get_json()['end']
                 )
@@ -219,7 +218,7 @@ class EventsByID(Resource):
                     db.session.add(event)
                     db.session.commit()
                     return event.to_dict(), 202
-                setattr(event, 'name', request.get_json()['name'])
+                setattr(event, 'title', request.get_json()['title'])
                 setattr(event, 'start', request.get_json()['start'])
                 setattr(event, 'end', request.get_json()['end'])
                 db.session.add(event)

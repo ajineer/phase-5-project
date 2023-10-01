@@ -10,33 +10,35 @@ import CalendarUI from './components/CalendarUI'
 import useStore from './store'
 import { NavLink } from 'react-router-dom'
 import ListCarousel from './components/ListCarousel'
+import moment from 'moment'
 
 function App() {
-  const { user, setUser, lists, setLists } = useStore()
+  const { user, setUser, lists, setLists, events, setEvents } = useStore()
   const navigate = useNavigate()
-
-    useEffect(() => {
-      async function fetchData(){
-        const response = await fetch('/api/check_session')
-        if (response.ok){
-          const data = await response.json() 
-          setUser(data)
-          setLists(data.lists)
-        }else{
-          navigate('/')
-        }
+  
+  useEffect(() => {
+    async function fetchData(){
+      const response = await fetch('/api/check_session')
+      if (response.ok){
+        const data = await response.json() 
+        setEvents(data.events)
+        setUser(data)
+        setLists(data.lists)
+      }else{
+        navigate('/')
       }
-      fetchData()
-    },[])
-
-    function logout(){
-      setUser(null)
-      fetch('/api/logout', {
-        method: 'DELETE'
-      })
-      navigate('/')
-      setLists([])
     }
+    fetchData()
+  },[])
+
+  function logout(){
+    setUser(null)
+    fetch('/api/logout', {
+      method: 'DELETE'
+    })
+    navigate('/')
+    setLists([])
+  }
 
   return (
   <div className="flex flex-col bg-gradient-radial from-white to-mirky_water h-screen font-sans">
