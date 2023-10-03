@@ -33,14 +33,7 @@ const useStore = create((set)=>({
 
     // events
     events: [],
-    setEvents: (newEvents) => set({ events: newEvents.map(evnt => {
-        return {
-            id: evnt.id,
-            title: evnt.title,
-            start: moment(evnt.start).toDate(),
-            end: moment(evnt.end).toDate()
-        }
-    }) }),
+    setEvents: (newEvents) => set({ events: newEvents }),
     eventForm: {
         name: '',
         date: '',
