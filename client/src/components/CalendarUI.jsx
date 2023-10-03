@@ -7,25 +7,10 @@ import { useState, useCallback, useEffect } from 'react';
 
 function CalendarUI(){
 
-    const { events, setEvents } = useStore()
-    const [calEvents, setCalEvents] = useState([])
+    const { events, setEvents, lists } = useStore()
     const localizer = momentLocalizer(moment);
     const DnDCalendar = withDragAndDrop(Calendar);
-    const [view, setView] = useState('month');
-
-    useEffect(()=>{
-        setCalEvents(events.map(evnt => {
-            return {
-                resourceId: evnt.resourceId,
-                title: evnt.title,
-                start: moment(evnt.start).toDate(),
-                end: moment(evnt.end).toDate(),
-                isDraggable: true,
-                isResizable: false,
-                isAllDay: false
-            }
-        }))
-    },[events])
+    const [view, setView] = useState('week');
 
     const handleSelectSlot = useCallback(
         ({ start, end }) => {
@@ -57,7 +42,7 @@ function CalendarUI(){
     };
 
     const handleDelete = (evnt) => {
-        console.log('delete: ', evnt)
+        console.log('delete: ', evnt.event)
         const resourceId = evnt.event.resourceId;
         deleteEvent(resourceId);
     };
@@ -70,57 +55,121 @@ function CalendarUI(){
     };
 
     const handleUpdateEvent = (updatedEvent) => {
-        console.log(updatedEvent)
-        const resourceId = updatedEvent.event.resourceId;
-        updateEvent(resourceId, updatedEvent);
-    };
-
-    const updateEvent = (resourceId, updatedEvent) => {
-        const currentEvents = [...events];
-        const currentEidx = currentEvents.findIndex(
-        (evnt) => evnt.resourceId === resourceId
-        );
-        currentEvents[currentEidx].start = updatedEvent.start;
-        currentEvents[currentEidx].end = updatedEvent.end;
-        setEvents(currentEvents);
-        fetch(`/api/events/${resourceId}`, {
+        const patchEvent = {
+            id: updatedEvent.event.resourceId,
+            title: updatedEvent.event.title,
+            start: updatedEvent.start,
+            end: updatedEvent.end,
+            action: ''
+        }
+        fetch(`/api/events/${patchEvent.id}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...updatedEvent.event, action: '' }),
-        });
+        body: JSON.stringify(patchEvent),
+        }).then(r => r.json())
+        .then(data => {
+            const updateEvents = [...events]
+            const uEidx = updateEvents.findIndex(evnt => evnt.resourceId === patchEvent.id)
+            updateEvents[uEidx] = data
+            setEvents(updateEvents)
+        })
     };
+
+    const onSelectEvent = event => { 
+        const newTitle = window.prompt(event.title)
+        event.title = newTitle
+        if(newTitle){
+            fetch(`/api/events/${event.resourceId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({...event, action:''}),
+            }).then(r => r.json())
+            .then(data => {
+                const updateEvents = [...events]
+                const uEidx = updateEvents.findIndex(evnt => evnt.resourceId === event.resourceId)
+                updateEvents[uEidx] = data
+                setEvents(updateEvents)
+            })
+        }
+    }
+
+    function addList(evnt, list){
+        fetch(`/api/events/${evnt.event.resourceId}`,{
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: evnt.event.title,
+                start: evnt.start,
+                end: evnt.end,
+                list_id: list.id,
+                action:'add'
+            })
+        }).then(r => r.json())
+        .then(data => {
+            const updateEvents = [...events]
+                const uEidx = updateEvents.findIndex(event => event.resourceId === evnt.resourceId)
+                updateEvents[uEidx] = data
+                setEvents(updateEvents)
+        })
+    }
 
     const components = {
         event: (evnt) => {
+            console.log(evnt)
         return (
-            <div className='flex text-xs'>
-            <h5>{evnt.title}</h5>
-            <button onClick={() => handleDelete(evnt)}>X</button>
-            </div>
+            view==='agenda'?
+            <div className='flex'>
+                <p>{evnt.event.title}, Lists: </p>
+                <ul>
+                    {evnt.event.lists?.map(list => 
+                        <li>
+                            {list.name}
+                        </li>
+                        )}
+                </ul>
+                <div className='flex ml-auto'>
+                    <button className='bg-red-600 p-1' onClick={() => handleDelete(evnt)}>X</button>
+                </div>
+                {view==='agenda' &&(
+                lists.length > 0?
+                <ul>
+                    {lists.map(list => 
+                        <li>{list.name} <button onClick={() => addList(evnt, list)}>add</button></li>    
+                        )}
+                </ul>:
+                <p>No lists to add</p>
+                )
+            }
+            </div>:
+            <p className='text-[10px]'>{evnt.event.title}</p>
         );
         },
     };
 
     return (
-        <DnDCalendar
-        view={view}
-        onView={(currentView) => setView(currentView)}
-        onEventDrop={(updatedEvent) => handleUpdateEvent(updatedEvent)}
-        draggableAccessor={(event) => event.isDraggable}
-        resizable={(event) => event.isResizable}
-        allDayAccessor={(event)=> event.isAllDay}
-        localizer={localizer}
-        startAccessor='start'
-        endAccessor='end'
-        events={calEvents}
-        onSelectSlot={handleSelectSlot}
-        components={components}
-        selectable
-        style={{ height: 500 }}
-        toolbar={[]}
-        />
+            <DnDCalendar
+            onView={(currentView) => setView(currentView)}
+            onEventDrop={(updatedEvent) => handleUpdateEvent(updatedEvent)}
+            onSelectSlot={handleSelectSlot}
+            onEventResize={(updatedEvent) => handleUpdateEvent(updatedEvent)}
+            onDoubleClickEvent={onSelectEvent}
+            on
+            view={view}
+            localizer={localizer}
+            events={events}
+            components={components}
+            toolbar={[]}
+            startAccessor='start'
+            endAccessor='end'
+            selectable
+            style={{ height: 500 }}
+            />
     );
     };
 
