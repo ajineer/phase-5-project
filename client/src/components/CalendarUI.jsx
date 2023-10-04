@@ -7,10 +7,12 @@ import { useState, useCallback, useEffect } from 'react';
 
 function CalendarUI(){
 
-    const { events, setEvents, lists } = useStore()
+    const { events, setEvents, lists, setLists } = useStore()
     const localizer = momentLocalizer(moment);
     const DnDCalendar = withDragAndDrop(Calendar);
     const [view, setView] = useState('week');
+    const [focusedEvent, setFocusedEvent] = useState({})
+    const [eventView, setEventview] = useState(false)
 
     const handleSelectSlot = useCallback(
         ({ start, end }) => {
@@ -41,17 +43,11 @@ function CalendarUI(){
         });
     };
 
-    const handleDelete = (evnt) => {
-        console.log('delete: ', evnt.event)
-        const resourceId = evnt.event.resourceId;
-        deleteEvent(resourceId);
-    };
-
-    const deleteEvent = (resourceId) => {
-        fetch(`/api/events/${resourceId}`, {
+    function handleDelete(evnt){
+        fetch(`/api/events/${evnt.event.resourceId}`, {
         method: 'DELETE',
         });
-        setEvents(events.filter((evnt) => evnt.resourceId !== resourceId));
+        setEvents(events.filter((e) => e.resourceId !== evnt.event.resourceId));
     };
 
     const handleUpdateEvent = (updatedEvent) => {
@@ -113,39 +109,45 @@ function CalendarUI(){
         }).then(r => r.json())
         .then(data => {
             const updateEvents = [...events]
-                const uEidx = updateEvents.findIndex(event => event.resourceId === evnt.resourceId)
-                updateEvents[uEidx] = data
-                setEvents(updateEvents)
+            const uEidx = updateEvents.findIndex(event => event.resourceId === evnt.resourceId)
+            updateEvents[uEidx] = data
+            setEvents(updateEvents)
+        })
+    }
+
+    function removeList(evnt, list){
+        evnt.event.lists = evnt.event.lists.filter(l => l.id !== list.id)
+        fetch(`/api/events/${evnt.event.resourceId}`,{
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: evnt.name,
+                start: evnt.start,
+                end: evnt.end,
+                list_id: list.id,
+                action: 'remove',
+            })
+        }).then(r => r.json())
+        .then(data => {
+            const updateEvents = [...events]
+            const uEidx = updateEvents.findIndex(event => event.resourceId === evnt.resourceId)
+            updateEvents[uEidx] = data
+            setEvents(updateEvents)
         })
     }
 
     const components = {
         event: (evnt) => {
-            console.log(evnt)
         return (
             view==='agenda'?
             <div className='flex'>
-                <p>{evnt.event.title}, Lists: </p>
-                <ul>
-                    {evnt.event.lists?.map(list => 
-                        <li>
-                            {list.name}
-                        </li>
-                        )}
-                </ul>
+                <p>{evnt.event.title}</p>
                 <div className='flex ml-auto'>
+                    <button onClick={()=>{setEventview(true), setFocusedEvent(evnt)}}>view</button>
                     <button className='bg-red-600 p-1' onClick={() => handleDelete(evnt)}>X</button>
                 </div>
-                {view==='agenda' &&(
-                lists.length > 0?
-                <ul>
-                    {lists.map(list => 
-                        <li>{list.name} <button onClick={() => addList(evnt, list)}>add</button></li>    
-                        )}
-                </ul>:
-                <p>No lists to add</p>
-                )
-            }
             </div>:
             <p className='text-[10px]'>{evnt.event.title}</p>
         );
@@ -153,23 +155,51 @@ function CalendarUI(){
     };
 
     return (
-            <DnDCalendar
-            onView={(currentView) => setView(currentView)}
-            onEventDrop={(updatedEvent) => handleUpdateEvent(updatedEvent)}
-            onSelectSlot={handleSelectSlot}
-            onEventResize={(updatedEvent) => handleUpdateEvent(updatedEvent)}
-            onDoubleClickEvent={onSelectEvent}
-            on
-            view={view}
-            localizer={localizer}
-            events={events}
-            components={components}
-            toolbar={[]}
-            startAccessor='start'
-            endAccessor='end'
-            selectable
-            style={{ height: 500 }}
-            />
+            <div>
+
+                <DnDCalendar
+                    onView={(currentView) => setView(currentView)}
+                    onEventDrop={(updatedEvent) => handleUpdateEvent(updatedEvent)}
+                    onSelectSlot={handleSelectSlot}
+                    onEventResize={(updatedEvent) => handleUpdateEvent(updatedEvent)}
+                    onDoubleClickEvent={onSelectEvent}
+                    on
+                    view={view}
+                    localizer={localizer}
+                    events={events}
+                    components={components}
+                    toolbar={[]}
+                    startAccessor='start'
+                    endAccessor='end'
+                    selectable
+                    style={{ height: 500 }}
+                />
+                {view === 'agenda' && eventView && 
+                    <div className='flex bg-light_navy h-[25%]'>
+                        <p>
+                            {focusedEvent.event.title}
+                        </p>
+                        <p className='ml-auto mr-auto'>lists to complete: 
+                            <ul>
+                                {focusedEvent.event.lists.length > 0 &&
+                                    focusedEvent.event.lists.map(list => 
+                                        <li>
+                                            {list.name}
+                                        </li>
+                                        )
+                                }
+                            </ul>
+                        </p>
+                        <p>Lists you can add:
+                            <ul>
+                                {lists.map(li => 
+                                    <li>{li.name}</li>
+                                    )}
+                            </ul>
+                        </p>
+                    </div>
+                }
+            </div>
     );
     };
 
