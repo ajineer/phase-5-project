@@ -42,13 +42,14 @@ const useStore = create((set)=>({
             lists: evnt.lists
         }
     }) }),
-    eventForm: {
-        name: '',
-        date: '',
-        start: '', 
-        end:'',
-    },
-    setEventForm: (newEventForm) => set({ eventForm: newEventForm })
+    focusedEvent: {},
+    setFocusedEvent: (newEvent) => set({focusedEvent:{
+        resourceId: newEvent.resourceId?newEvent.resourceId:newEvent.id,
+        title: newEvent.title,
+        start: moment(newEvent.start).toDate(),
+        end: moment(newEvent.end).toDate(),
+        lists: newEvent.lists
+    }})
 }))
 
 export default useStore

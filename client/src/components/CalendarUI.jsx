@@ -5,13 +5,14 @@ import useStore from '../store';
 import moment from 'moment';
 import { useState, useCallback, useEffect } from 'react';
 
+
 function CalendarUI(){
 
-    const { events, setEvents, lists, setLists } = useStore()
+    const { events, setEvents, lists, focusedEvent, setFocusedEvent } = useStore()
     const localizer = momentLocalizer(moment);
     const DnDCalendar = withDragAndDrop(Calendar);
     const [view, setView] = useState('week');
-    const [focusedEvent, setFocusedEvent] = useState({})
+    //const [focusedEvent, setFocusedEvent] = useState({})
     const [eventView, setEventview] = useState(false)
 
     const handleSelectSlot = useCallback(
@@ -93,46 +94,51 @@ function CalendarUI(){
         }
     }
 
-    function addList(evnt, list){
-        fetch(`/api/events/${evnt.event.resourceId}`,{
+    function addList(list){
+        fetch(`/api/events/${focusedEvent.resourceId}`,{
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                title: evnt.event.title,
-                start: evnt.start,
-                end: evnt.end,
+                title: focusedEvent.title,
+                start: focusedEvent.start,
+                end: focusedEvent.end,
                 list_id: list.id,
                 action:'add'
             })
         }).then(r => r.json())
         .then(data => {
+            setFocusedEvent(data)
             const updateEvents = [...events]
-            const uEidx = updateEvents.findIndex(event => event.resourceId === evnt.resourceId)
+            const uEidx = updateEvents.findIndex(event => event.resourceId === focusedEvent.event.resourceId)
             updateEvents[uEidx] = data
             setEvents(updateEvents)
         })
     }
 
-    function removeList(evnt, list){
-        evnt.event.lists = evnt.event.lists.filter(l => l.id !== list.id)
-        fetch(`/api/events/${evnt.event.resourceId}`,{
+    useEffect(() => {
+        //console.log(focusedEvent.event)
+    },[focusedEvent])
+
+    function removeList(list){
+        fetch(`/api/events/${focusedEvent.resourceId}`,{
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: evnt.name,
-                start: evnt.start,
-                end: evnt.end,
+                title: focusedEvent.title,
+                start: focusedEvent.start,
+                end: focusedEvent.end,
                 list_id: list.id,
                 action: 'remove',
             })
         }).then(r => r.json())
         .then(data => {
+            setFocusedEvent(data)
             const updateEvents = [...events]
-            const uEidx = updateEvents.findIndex(event => event.resourceId === evnt.resourceId)
+            const uEidx = updateEvents.findIndex(event => event.resourceId === focusedEvent.event.resourceId)
             updateEvents[uEidx] = data
             setEvents(updateEvents)
         })
@@ -145,8 +151,8 @@ function CalendarUI(){
             <div className='flex'>
                 <p>{evnt.event.title}</p>
                 <div className='flex ml-auto'>
-                    <button onClick={()=>{setEventview(true), setFocusedEvent(evnt)}}>view</button>
-                    <button className='bg-red-600 p-1' onClick={() => handleDelete(evnt)}>X</button>
+                    <button onClick={()=>{setEventview(true), setFocusedEvent(evnt.event)}}>view</button>
+                    <button className='bg-red-600 p-1' onClick={() => handleDelete(evnt.event)}>X</button>
                 </div>
             </div>:
             <p className='text-[10px]'>{evnt.event.title}</p>
@@ -163,7 +169,6 @@ function CalendarUI(){
                     onSelectSlot={handleSelectSlot}
                     onEventResize={(updatedEvent) => handleUpdateEvent(updatedEvent)}
                     onDoubleClickEvent={onSelectEvent}
-                    on
                     view={view}
                     localizer={localizer}
                     events={events}
@@ -177,26 +182,26 @@ function CalendarUI(){
                 {view === 'agenda' && eventView && 
                     <div className='flex bg-light_navy h-[25%]'>
                         <p>
-                            {focusedEvent.event.title}
+                            {focusedEvent?.title}
                         </p>
                         <p className='ml-auto mr-auto'>lists to complete: 
                             <ul>
-                                {focusedEvent.event.lists.length > 0 &&
-                                    focusedEvent.event.lists.map(list => 
-                                        <li>
-                                            {list.name}
+                                {focusedEvent.lists && focusedEvent.lists.length > 0 &&
+                                    focusedEvent.lists.map(list => 
+                                        <li key={list.id}>
+                                            {list.name}<button onClick={() => removeList(list)}>remove</button>
                                         </li>
                                         )
                                 }
                             </ul>
                         </p>
-                        <p>Lists you can add:
-                            <ul>
-                                {lists.map(li => 
-                                    <li>{li.name}</li>
-                                    )}
-                            </ul>
-                        </p>
+                        {lists && lists.length>0 &&
+                            lists.filter((list)=> !focusedEvent.lists.some((eventList)=>eventList.id === list.id)).map(list => (
+                            <li className='flex flex-row h-min' key={list.id}>
+                                {list.name}
+                                <button className='ml-auto bg-gray-200 hover:bg-white' onClick={()=>(addList(list))}>Add list</button>
+                            </li>
+                        ))}
                     </div>
                 }
             </div>
