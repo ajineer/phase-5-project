@@ -45,10 +45,18 @@ function CalendarUI(){
     };
 
     function handleDelete(evnt){
-        fetch(`/api/events/${evnt.event.resourceId}`, {
+        fetch(`/api/events/${evnt.resourceId}`, {
         method: 'DELETE',
         });
-        setEvents(events.filter((e) => e.resourceId !== evnt.event.resourceId));
+        setEvents(events.filter((e) => e.resourceId !== evnt.resourceId));
+        setFocusedEvent({
+            resourceId: '',
+            title: '',
+            start: '',
+            end: '',
+            lists: []
+        })
+        setEventview(false)
     };
 
     const handleUpdateEvent = (updatedEvent) => {
@@ -111,15 +119,11 @@ function CalendarUI(){
         .then(data => {
             setFocusedEvent(data)
             const updateEvents = [...events]
-            const uEidx = updateEvents.findIndex(event => event.resourceId === focusedEvent.event.resourceId)
+            const uEidx = updateEvents.findIndex(event => event.resourceId === focusedEvent.resourceId)
             updateEvents[uEidx] = data
             setEvents(updateEvents)
         })
     }
-
-    useEffect(() => {
-        //console.log(focusedEvent.event)
-    },[focusedEvent])
 
     function removeList(list){
         fetch(`/api/events/${focusedEvent.resourceId}`,{
@@ -138,7 +142,7 @@ function CalendarUI(){
         .then(data => {
             setFocusedEvent(data)
             const updateEvents = [...events]
-            const uEidx = updateEvents.findIndex(event => event.resourceId === focusedEvent.event.resourceId)
+            const uEidx = updateEvents.findIndex(event => event.resourceId === focusedEvent.resourceId)
             updateEvents[uEidx] = data
             setEvents(updateEvents)
         })
@@ -162,8 +166,8 @@ function CalendarUI(){
 
     return (
             <div>
-
                 <DnDCalendar
+                    className={`border-2 border-black`}
                     onView={(currentView) => setView(currentView)}
                     onEventDrop={(updatedEvent) => handleUpdateEvent(updatedEvent)}
                     onSelectSlot={handleSelectSlot}
@@ -177,31 +181,38 @@ function CalendarUI(){
                     startAccessor='start'
                     endAccessor='end'
                     selectable
-                    style={{ height: 500 }}
+                    style={{ height: '50%' }}
                 />
                 {view === 'agenda' && eventView && 
                     <div className='flex bg-light_navy h-[25%]'>
-                        <p>
+                        <p className='w-[33%]'>
                             {focusedEvent?.title}
                         </p>
-                        <p className='ml-auto mr-auto'>lists to complete: 
-                            <ul>
-                                {focusedEvent.lists && focusedEvent.lists.length > 0 &&
-                                    focusedEvent.lists.map(list => 
-                                        <li key={list.id}>
-                                            {list.name}<button onClick={() => removeList(list)}>remove</button>
-                                        </li>
-                                        )
-                                }
-                            </ul>
-                        </p>
-                        {lists && lists.length>0 &&
-                            lists.filter((list)=> !focusedEvent.lists.some((eventList)=>eventList.id === list.id)).map(list => (
-                            <li className='flex flex-row h-min' key={list.id}>
-                                {list.name}
-                                <button className='ml-auto bg-gray-200 hover:bg-white' onClick={()=>(addList(list))}>Add list</button>
-                            </li>
-                        ))}
+                        <ul className='w-[33%] ml-auto mr-auto border-2 border-black bg-white'>
+                            <p className='bg-yellow-200'>lists to complete</p>
+                            {focusedEvent.lists && focusedEvent.lists.length > 0 &&
+                                focusedEvent.lists.map(list => 
+                                <li className='flex flex-row h-min m-1' key={list.id}>
+                                    <span className='mr-auto'>
+                                        {list.name}
+                                    </span>
+                                    <button className='ml-auto bg-gray-200 hover:bg-white' onClick={() => removeList(list)}>remove</button>
+                                </li>
+                                )
+                            }
+                        </ul>
+                        <ul className='w-[33%] ml-auto border-2 border-black'>
+                            <p>add a list</p>
+                            {lists && lists.length>0 &&
+                                lists.filter((list)=> !focusedEvent.lists.some((eventList)=>eventList.id === list.id)).map(list => (
+                                <li className='flex flex-row h-min m-1' key={list.id}>
+                                    <span className='mr-auto'>
+                                        {list.name}
+                                    </span>
+                                    <button className='ml-auto bg-gray-200 hover:bg-white' onClick={()=>(addList(list))}>Add</button>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 }
             </div>
