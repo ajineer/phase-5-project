@@ -4,8 +4,8 @@ import useStore from '../store'
 import moment from 'moment'
 
 
-function Login(){
-    const { loginForm, setLoginForm, setUser, setLists, lists, events, setEvents} = useStore()
+function Login({setEvents}){
+    const { loginForm, setLoginForm, setUser, setLists, lists} = useStore()
     const navigate = useNavigate()
 
     function handleChange(e){

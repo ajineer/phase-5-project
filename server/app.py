@@ -236,44 +236,6 @@ class EventsByID(Resource):
                 return {'Message': 'Event deleted'}, 204
             return {'error': 'Event not found'}, 404
         return {'error': 'Unauthorized'}, 401
-    
-
-class Days(Resource):
-
-    def get(self):
-        if session.get('user_id'):
-            days = Day.query.all()
-            if days:
-                return [day.to_dict() for day in days], 200
-            return {'error': 'No days found'}, 404
-        return {'error': 'Unaruthorized'}, 401   
-
-    def post(self):
-        if session.get('user_id'):
-            try:
-                new_day = Day(
-                    user_id = session['user_id'],
-                    date = request.get_json()['date']
-                )
-                if not Day.query.filter(Day.date == request.get_json()['date']).first():
-                    db.session.add(new_day)
-                    db.session.commit()
-                    return new_day.to_dict(), 201
-                return {'error': '422 Unprocessable Entity'}, 422
-            except IntegrityError:
-                return {'error': 'could not create Day'}, 422
-        return {'error': 'Unauthorized'}, 401
-    
-class DaysByID(Resource):
-    def delete(self, id):
-        if session.get('user_id'):
-            day = Day.query.filter(Day.id == id).first()
-            if day:
-                db.session.delete(day)
-                db.session.commit()
-                return {'Message': 'Day deleted'}, 204
-            return {'error': 'Day not found'}, 404
-        return {'error': 'Unauthorized'}, 401
 
 # basic user paths
 api.add_resource(Signup, '/signup', endpoint='signup')

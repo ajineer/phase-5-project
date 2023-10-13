@@ -33,15 +33,7 @@ const useStore = create((set)=>({
 
     // events
     events: [],
-    setEvents: (newEvents) => set({ events: newEvents.map(evnt => {
-        return {
-            resourceId: evnt.id,
-            title: evnt.title,
-            start: moment(evnt.start).toDate(),
-            end: moment(evnt.end).toDate(),
-            lists: evnt.lists
-        }
-    }) }),
+    setEvents: (newEvents) => set({ events: newEvents }),
     focusedEvent: {},
     setFocusedEvent: (newEvent) => set({focusedEvent:{
         resourceId: newEvent.resourceId?newEvent.resourceId:newEvent.id,

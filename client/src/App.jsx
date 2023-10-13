@@ -9,10 +9,10 @@ import ListUI from './components/ListUI'
 import CalendarUI from './components/CalendarUI'
 import useStore from './store'
 import ListCarousel from './components/ListCarousel'
-import moment from 'moment'
 
 function App() {
-  const { user, setUser, lists, setLists, events, setEvents } = useStore()
+  const { user, setUser, lists, setLists} = useStore()
+  const [events, setEvents] = useState([])
   const navigate = useNavigate()
   
   useEffect(() => {
@@ -74,9 +74,9 @@ function App() {
       <Routes className="p-2">
         <Route exact path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login/>} />
+        <Route path="/login" element={<Login setEvents={setEvents}/>} />
         <Route path="/lists" element={<ListCarousel/>} />
-        <Route path="/calendar" element={<CalendarUI user={user} lists={lists}/>} />
+        <Route path="/calendar" element={<CalendarUI events={events} setEvents={setEvents}/>} />
       </Routes>
     </main>
   </div>
