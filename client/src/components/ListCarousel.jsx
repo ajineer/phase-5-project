@@ -6,21 +6,21 @@ import useStore from "../store"
 
 function ListCarousel(){
 
-    const { user, setuser, lists, setLists, Lform, setLForm, current, setCurrent } = useStore()
+    const {lists, current, setCurrent } = useStore()
 
     function next(){
-        setCurrent(current === lists.length ? 0 : current+1)
+        setCurrent(current === lists.length-1 ? 0 : current+1)
     }
     function prev(){
-        setCurrent(current === 0? lists.length : current-1)
+        setCurrent(current === 0? lists.length-1 : current-1)
     }
 
     return (
 
-        <div className="flex justify-center mt-auto mb-auto w-[90%] h-[90%]">
-            <button className="mr-1 mt-auto mb-auto h-min w-min p-4 bg-stone-500 hover:bg-stone-300" onClick={() => prev()}>{`\u2770`}</button>                   
+        <div className="flex justify-center h-[100%] w-[100%]">
+            <button className="mt-auto mb-auto h-min w-min p-4 bg-stone-500 hover:bg-stone-300" onClick={() => prev()}>{`\u2770`}</button>                   
                 <Tasks/>
-            <button className="ml-1 mt-auto mb-auto h-min w-min p-4 bg-stone-500 hover:bg-stone-300" onClick={() => next()}>{`\u2771`}</button>
+            <button className="mt-auto mb-auto h-min w-min p-4 bg-stone-500 hover:bg-stone-300" onClick={() => next()}>{`\u2771`}</button>
         </div>
     )
 }

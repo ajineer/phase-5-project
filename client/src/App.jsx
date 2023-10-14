@@ -40,37 +40,37 @@ function App() {
   }
 
   return (
-  <div className="flex flex-col bg-gradient-radial from-white to-mirky_water h-screen font-sans">
-    <nav className='flex flex-col bg-white bg-opacity-50 max-h-[20vh]'>
-      <svg className='flex justify-center w-[100%] h-[100%] bg-white'>
-        <image className='w-[100%] h-[85%]' href="../../public/Logo2.png"/> 
-      </svg>
+  <div className="flex flex-col bg-gradient-radial from-white to-mirky_water font-sans h-screen w-screen overflow-y-clip">
+    <svg className='flex items-center bg-white border-2 border-black w-[100%]'>
+      <image x='33%' y="7.5%" width='33%' height='85%' href="../../public/Logo2.png"/> 
+    </svg>
+    <nav className='flex flex-col bg-opacity-50'>
     {user !== null ? 
         <div className='flex flex-row bg-white'>
-            <NavLink className='flex justify-center m-auto w-[25vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={"/"} exact='true'>
+            <NavLink className='flex justify-center m-auto w-[25%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={"/"} exact='true'>
               Home
             </NavLink>
-            <NavLink className='flex justify-center m-auto w-[25vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/lists'}>
+            <NavLink className='flex justify-center m-auto w-[25%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/lists'}>
               Lists
             </NavLink>
-            <NavLink className='flex justify-center m-auto w-[25vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/calendar'}>
+            <NavLink className='flex justify-center m-auto w-[25%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/calendar'}>
               Calendar
             </NavLink>
-            <button className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white]' onClick={logout}>Logout</button>
+            <button className='flex justify-center m-auto w-[25%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white]' onClick={logout}>Logout</button>
         </div> :
         <div className='flex flex-row bg-white'>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={"/"} exact='true'>
+            <NavLink className='flex justify-center m-auto w-[33%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={"/"} exact='true'>
                 Home
             </NavLink>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/signup'}>
+            <NavLink className='flex justify-center m-auto w-[33%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/signup'}>
                 Sign up
             </NavLink>
-            <NavLink className='flex justify-center m-auto w-[33vw] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/login'}>
+            <NavLink className='flex justify-center m-auto w-[33%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={'/login'}>
                 Login
             </NavLink>
         </div>}
     </nav>
-    <main className='flex justify-center bg-white bg-opacity-50 h-[80vh]'>
+    <main className='flex justify-center bg-opacity-50 h-[100%] w-[80%] ml-auto mr-auto mt-10'>
       <Routes className="p-2">
         <Route exact path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />

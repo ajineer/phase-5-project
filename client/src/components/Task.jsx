@@ -3,11 +3,12 @@ import useStore from "../store"
 
 function Task({task}){
 
-    const { lists, current, setLists, toggleEdit, setToggleEdit, taskForm, setTaskForm} = useStore()
+    const { lists, current, setLists, taskForm, setTaskForm} = useStore()
     const [formData, setFormData] = useState({
         description: '',
         status: 0
     })
+    const [toggleEdit, setToggleEdit] = useState(false)
 
     useEffect(()=>{
         setFormData({...task})
@@ -70,10 +71,10 @@ function Task({task}){
     return (
         <>
             {task?
-            <li className='flex mt-5 bg-violet rounded bg-opacity-50 ml-[10%] w-[80%] text-xl'>
+            <li className={`flex mt-5 bg-${task.status===0?'violet':'leafy_green'} rounded bg-opacity-30 ml-[10%] w-[80%] text-xl p-2 border-2 border-blood_orange/30`}>
                 
-                <h3 className={`mt-auto mb-auto pr-1 w-[15%] ${toggleEdit?"hidden":""}`}>{task.description}</h3>
-                <h3 className={`mt-auto mb-auto ml-[25%] text-xs ${toggleEdit?"hidden":""}`}>Updated: {task.updated}</h3>
+                <h3 className={`bg-white text-center mt-auto mb-auto pr-1 w-[20ch] ${toggleEdit?"hidden":""}`}>{task.description}</h3>
+                <h3 className={`mt-auto mb-auto ml-auto pr-1 text-[.9rem] ${toggleEdit?"hidden":""}`}>Updated: {task.updated}</h3>
                 <div className={`flex ml-auto ${toggleEdit?"hidden":""}`}>
                     <button onClick={() => handleDelete(task)} className="hover:bg-blue-200 pr-3 pl-3">X</button>
                     <button onClick={() => setToggleEdit(!toggleEdit)} className="hover:bg-blue-200 pr-3 pl-3">{`\u270E`}</button>

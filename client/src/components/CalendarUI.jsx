@@ -14,6 +14,7 @@ function CalendarUI({events, setEvents}){
     const [view, setView] = useState('week');
     const [eventView, setEventview] = useState(false)
     const [calEvents, setCalEvents] = useState([])
+    const [selectDate, setSelectDate] = useState(null)
 
     const handleSelectSlot = useCallback(
         ({ start, end }) => {
@@ -157,7 +158,6 @@ function CalendarUI({events, setEvents}){
                 lists: evnt.lists
             }
         }))
-        console.log(events[0])
     },[events, setEvents])
 
     const components = {
@@ -177,14 +177,15 @@ function CalendarUI({events, setEvents}){
     };
 
     return (
-            <div>
+            <div className='h-[100%] w-[100%]'>
                 <DnDCalendar
-                    className={`border-2 border-black`}
                     onView={(currentView) => setView(currentView)}
                     onEventDrop={(updatedEvent) => handleUpdateEvent(updatedEvent)}
                     onSelectSlot={handleSelectSlot}
                     onEventResize={(updatedEvent) => handleUpdateEvent(updatedEvent)}
                     onDoubleClickEvent={onSelectEvent}
+                    onNavigate={(date, view) => setSelectDate(date)}
+                    date={selectDate}
                     view={view}
                     localizer={localizer}
                     events={calEvents}
@@ -192,16 +193,19 @@ function CalendarUI({events, setEvents}){
                     toolbar={[]}
                     startAccessor='start'
                     endAccessor='end'
-                    selectable
-                    style={{ height: '50%' }}
+                    style={{backgroundColor:'white', height: '60%', width: '60%', marginLeft:'auto', marginRight:'auto', marginTop:'auto', marginBottom:'auto', border:'solid black 2px' }}
                 />
                 {view === 'agenda' && eventView && 
-                    <div className='grid grid-cols-3 gap-1 bg-light_navy h-[25%]'>
-                        {console.log(focusedEvent)}
-                        <p className='flex flex-col pl-1 w-[100%] h-[100%] bg-blood_orange text-center justify-center'>
-                            {focusedEvent?.title}
+                    <div className='grid grid-cols-3 gap-1 bg-light_navy h-[25%] w-[60%] ml-auto mr-auto'>
+                        <p className='flex flex-col bg-white pl-1 w-[100%] h-[100%] p-1'>
+                            <span className='w-fit'>
+                                Title: {focusedEvent?.title}
+                            </span>
+                            <span>
+                                Time: {String(moment(focusedEvent?.start).format("hh:mm a"))} - {String(moment(focusedEvent?.end).format("hh:mm a"))}
+                            </span>
                         </p>
-                        <ul className='flex flex-col bg-white overflow-y-scroll'>
+                        <ul className='flex flex-col bg-white overflow-y-scroll p-1'>
                             <p className='bg-yellow-200'>lists to complete</p>
                             {focusedEvent.lists && focusedEvent.lists.length > 0 &&
                                 focusedEvent.lists.map(list => 
@@ -214,7 +218,7 @@ function CalendarUI({events, setEvents}){
                                 )
                             }
                         </ul>
-                        <ul className='flex flex-col bg-white overflow-y-scroll'>
+                        <ul className='flex flex-col bg-white overflow-y-scroll p-1'>
                             <p className='pl-1 bg-violet text-white'>add a list</p>
                             {lists && lists.length>0 &&
                                 lists.filter((list)=> !focusedEvent.lists?.some((eventList)=>eventList.id === list.id)).map(list => (
