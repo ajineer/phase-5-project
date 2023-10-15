@@ -15,7 +15,8 @@ export default {
       },
       backgroundImage:{
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-      }
+        'background': 'url("/src/assets/PlanlyBG3.png")'
+      },
     },
   },
   plugins: [],

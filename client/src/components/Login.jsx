@@ -1,7 +1,6 @@
 import React,{ useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useStore from '../store'
-import moment from 'moment'
 
 
 function Login({setEvents}){
@@ -37,7 +36,7 @@ function Login({setEvents}){
 
     return (
         <>
-            <form className='flex flex-col bg-light_navy w-fit mr-auto ml-auto mt-5 p-10 h-fit' onSubmit={handleSubmit}>
+            <form className='flex flex-col bg-light_navy w-fit mr-auto ml-auto mt-[10%] p-10 h-fit rounded-xl' onSubmit={handleSubmit}>
                 <h2 className='text-lg'>Login</h2>
                 <label>Username</label>
                 <input

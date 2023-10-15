@@ -9,6 +9,7 @@ import ListUI from './components/ListUI'
 import CalendarUI from './components/CalendarUI'
 import useStore from './store'
 import ListCarousel from './components/ListCarousel'
+import Background from './components/Background'
 
 function App() {
   const { user, setUser, lists, setLists} = useStore()
@@ -40,13 +41,13 @@ function App() {
   }
 
   return (
-  <div className="flex flex-col bg-gradient-radial from-white to-mirky_water font-sans h-screen w-screen overflow-y-clip">
+    <div className="flex flex-col bg-background bg-[length:100%_100%] bg-no-repeat bg-center font-sans h-screen w-screen">
     <svg className='flex items-center bg-white border-2 border-black w-[100%]'>
       <image x='33%' y="7.5%" width='33%' height='85%' href="../../public/Logo2.png"/> 
     </svg>
-    <nav className='flex flex-col bg-opacity-50'>
+    <nav className='flex flex-col'>
     {user !== null ? 
-        <div className='flex flex-row bg-white'>
+        <div className='flex flex-row bg-light_navy'>
             <NavLink className='flex justify-center m-auto w-[25%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={"/"} exact='true'>
               Home
             </NavLink>
@@ -58,7 +59,7 @@ function App() {
             </NavLink>
             <button className='flex justify-center m-auto w-[25%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white]' onClick={logout}>Logout</button>
         </div> :
-        <div className='flex flex-row bg-white'>
+        <div className='flex flex-row bg-light_navy'>
             <NavLink className='flex justify-center m-auto w-[33%] bg-light_navy border-2 border-light_navy hover:bg-mirky_water hover:text-[white] rounded' to={"/"} exact='true'>
                 Home
             </NavLink>
@@ -80,7 +81,6 @@ function App() {
       </Routes>
     </main>
   </div>
-
   )
 }
 
