@@ -35,27 +35,25 @@ function Login({setEvents}){
     }
 
     return (
-        <>
-            <form className='flex flex-col bg-light_navy w-fit mr-auto ml-auto mt-[10%] p-10 h-fit rounded-xl' onSubmit={handleSubmit}>
-                <h2 className='text-lg'>Login</h2>
-                <label>Username</label>
-                <input
-                    type="text"
-                    name="username"
-                    value={loginForm.username}
-                    onChange={handleChange}
-                    />
+        <form className='flex flex-col bg-light_navy w-fit mr-auto ml-auto mt-[10%] p-10 h-fit rounded-xl' onSubmit={handleSubmit}>
+            <h2 className='text-lg ml-auto mr-auto mb-5'>Login</h2>
+            <label>Username</label>
+            <input
+                type="text"
+                name="username"
+                value={loginForm.username}
+                onChange={handleChange}
+                />
 
-                <label>Password</label>
-                <input
-                    type="text"
-                    name="password"
-                    value={loginForm.password}
-                    onChange={handleChange}
-                    />
-                <button className="ml-auto mr-auto mt-2 w-min pl-4 pr-4 bg-gray-300 hover:bg-white" type="submit">Submit</button>
-            </form>
-        </>
+            <label>Password</label>
+            <input
+                type="password"
+                name="password"
+                value={loginForm.password}
+                onChange={handleChange}
+                />
+            <button className="ml-auto mr-auto mt-5 w-min pl-4 pr-4 bg-leafy_green hover:bg-gree-500 border-2 border-black" type="submit">Submit</button>
+        </form>
     )       
 }
 

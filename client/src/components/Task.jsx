@@ -3,7 +3,7 @@ import useStore from "../store"
 
 function Task({task}){
 
-    const { lists, current, setLists, taskForm, setTaskForm} = useStore()
+    const { lists, current, setLists} = useStore()
     const [formData, setFormData] = useState({
         description: '',
         status: 0
@@ -33,7 +33,6 @@ function Task({task}){
 
     function handleChange(e){
         const {name, value} = e.target
-        setTaskForm({...taskForm, [name]:value})
         setFormData({...formData, [name]:value})
     }
 
@@ -46,7 +45,7 @@ function Task({task}){
             }, body: JSON.stringify(formData)
         }).then(r => r.json())
         .then((t) => {
-            const updatedList = { ...lists[current], tasks: lists[current].tasks.map(task => task.id === task.id ? t : task)}
+            const updatedList = { ...lists[current], tasks: lists[current].tasks.map(currentTask => currentTask.id === t.id ? t : currentTask)}
             const updatedLists = lists.map(l => l.id === lists[current].id ? updatedList : l)
             setLists(updatedLists)
         })
@@ -91,7 +90,7 @@ function Task({task}){
                         className="mr-auto w-[100%]"
                         type='text'
                         name='description'
-                        value={formData.description}
+                        placeholder={formData.description}
                         onChange={(e) => handleChange(e)}>
                     </input>   
                 </form>

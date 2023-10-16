@@ -70,9 +70,8 @@ function Signup(){
   };
 
   return (
-    <div className='flex flex-col items-center ml-auto mr-auto mt-5 bg-light_navy h-fit p-5'>
-      <h2 className='mb-5'>Welcome!</h2>
-      <form className='flex flex-col' onSubmit={handleSubmit}>
+      <form className='flex flex-col items-center ml-auto mr-auto mt-[10%] rounded-xl bg-light_navy h-fit p-5' onSubmit={handleSubmit}>
+        <h2 className='ml-auto mr-auto mb-5'>Welcome!</h2>
         <button
             className='bg-white border-2 border-gray-300 rounded hover:bg-gray-300'
             type='button'
@@ -86,6 +85,7 @@ function Signup(){
             type="text"
             name="username"
             placeholder="Username"
+            required={true}
             value={formData.username}
             onChange={handleChange}
         />
@@ -93,6 +93,7 @@ function Signup(){
             className='mb-1 border-2 border-gray-300'
             type="text"
             name="email"
+            required={true}
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
@@ -101,13 +102,13 @@ function Signup(){
             className='mb-1 border-2 border-gray-300'
             type="password"
             name="password"
+            required={true}
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
         />
         <button className='bg-leafy_green hover:bg-green-600 w-fit ml-auto mr-auto mt-2 border-2 border-black rounded p-1' type="submit">Sign Up</button>
       </form>
-    </div>
    )
 }
 

@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useNavigate, NavLink } from 'react-router-dom'
-import HeaderBar from './components/HeaderBar'
-import Nav from './components/Nav'
 import Home from './components/Home'
 import Signup from './components/Signup'
 import Login from './components/Login'
-import ListUI from './components/ListUI'
 import CalendarUI from './components/CalendarUI'
 import useStore from './store'
 import ListCarousel from './components/ListCarousel'
-import Background from './components/Background'
+
 
 function App() {
   const { user, setUser, lists, setLists} = useStore()
@@ -41,7 +38,7 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col bg-background bg-[length:100%_100%] bg-no-repeat bg-center font-sans h-screen w-screen">
+    <div className="flex flex-col font-sans h-screen w-screen">
     <svg className='flex items-center bg-white border-2 border-black w-[100%]'>
       <image x='33%' y="7.5%" width='33%' height='85%' href="../../public/Logo2.png"/> 
     </svg>
@@ -71,7 +68,7 @@ function App() {
             </NavLink>
         </div>}
     </nav>
-    <main className='flex justify-center bg-opacity-50 h-[100%] w-[80%] ml-auto mr-auto mt-10'>
+    <main className='flex justify-center bg-background bg-[length:175%_175%] bg-no-repeat bg-center h-[100%] w-[100%] ml-auto mr-auto mt-10'>
       <Routes className="p-2">
         <Route exact path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
