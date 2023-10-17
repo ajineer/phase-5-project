@@ -190,6 +190,7 @@ function CalendarUI({events, setEvents}){
                     localizer={localizer}
                     events={calEvents}
                     components={components}
+                    selectable={true}
                     toolbar={[]}
                     startAccessor='start'
                     endAccessor='end'
